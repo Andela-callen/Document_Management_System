@@ -9,17 +9,28 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       roleId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Roles',
+          key: 'id'
+        }
       },
       username: {
         type: Sequelize.STRING,
+        allowNull: false,
         unique: true
       },
-      fullName: {
-        type: Sequelize.STRING
+      firstname: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      lastname: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
       email: {
         type: Sequelize.STRING,
+        allowNull: false,
         unique: true
       },
       password_digest: {

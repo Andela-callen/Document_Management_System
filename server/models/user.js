@@ -6,7 +6,11 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     roleId: {
       type : DataTypes.INTEGER,
-      foreignKey: true,
+      validate: {
+        isInt: {
+          msg: 'Role Id must be an integer'
+        }
+      }
     },
     username: {
       type: DataTypes.STRING,
@@ -19,13 +23,23 @@ module.exports = (sequelize, DataTypes) => {
         }
       }   
     },
-    fullName: {
+    firstname: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: {
           args: [3, 100],
-          msg: "fullName must be at least 3 characters in length"
+          msg: "firstname must be at least 3 characters in length"
+        }
+      }   
+    },
+    lastname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: {
+          args: [3, 100],
+          msg: "lastname must be at least 3 characters in length"
         }
       }   
     },
@@ -64,8 +78,8 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: (models) => {
         // associations can be defined here
-        User.belongsTo(models.Role, {foreignKey: "roleId"});
-        // User.hasMany(models.Documents, {foreignKey:});
+        User.belongsTo(models.Role, {onDelete: 'CASCADE', foreignKey: "roleId"});
+        User.hasMany(models.Document, {onDelete: 'CASCADE', foreignKey:"userId"});
       }
     }
   });
