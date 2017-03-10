@@ -12,11 +12,11 @@ router.post('/users/', usersController.createUser);
 
 router.get('/users/', usersController.instanceUsers);
 
-router.get('users/:id', usersController.findUser);
+router.get('/users/:id', usersController.findUser);
 
-router.put('users/:id', usersController.updateUser);
+router.put('/users/:id', usersController.updateUser);
 
-router.delete('user/:id', usersController.deleteUser);
+router.delete('/users/:id', usersController.deleteUser);
 
 router.post('/documents/', documentController.createDocument);
 
@@ -28,7 +28,7 @@ router.put('/documents/:id', documentController.updateDocument);
 
 router.delete('/documents/:id', documentController.deleteDocument);
 
-// router.get('/users/:id/documents', documentController.findAllDocument);
+router.get('/users/:id/documents', usersController.findAllDocument);
 
 
 module.exports = router;

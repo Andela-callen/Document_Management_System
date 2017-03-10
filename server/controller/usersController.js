@@ -80,7 +80,28 @@ class userController{
   }
 
   static deleteUser(req, res){
+    User.findOne({ where: { id: req.params.id } })
+      .then((user) => {
+        if (!user) {
+          res.status(200).json({ msg: `User ${req.params.id} not found` });
+        }
+        User.destroy({ where: { id: req.params.id } })
+          .then((user) => {
+            res.status(201).json({ msg: 'User deleted' });
+          });
+      });
+  }
 
+  static findAllDocument(req, res){
+    User.findOne({ where: { id: req.params.id }})
+    .then((user) => {
+      user.getDocuments().then((documents) => {
+        res.status(200).json({ msg: documents});
+      });
+    })
+    .catch((err) => {
+      res.status(404).json({ msg: err.message})
+    });
   }
 }
 
