@@ -1,8 +1,6 @@
-'use strict';
+import bcrypt from 'bcrypt';
 
-const bcrypt = require ('bcrypt');
-
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     roleId: {
       type : DataTypes.INTEGER,

@@ -1,4 +1,4 @@
-const Document = require('../models/index.js').Document;
+import db from '../models';
 
 class documentController{
   static createDocument(req, res){
@@ -8,7 +8,7 @@ class documentController{
      accessType: req.body.accessType,
      userId: req.body.userId
    };
-   Document.create(newDoc)
+   db.Document.create(newDoc)
    .then((document) => {
      res.status(201).json({ msg: 'Document created', document } );
    }).catch((err) => {
@@ -17,8 +17,22 @@ class documentController{
   }
 
   static instanceDocuments(req, res){
-    Document.findAll()
+    // http://localhost:3000/api/users?limit=10&offset=5
+    const limit = req.query.limit;
+    const offset = req.query.offset;
+    db.Document.findAndCountAll({
+      where: {
+        $or: [
+          { accessType: 'public' },
+          { }
+        ]
+        
+      }
+    })
    .then((document) => {
+     if (document.count < 1) {
+       return res.status(404).json({ message: 'Document not found '})
+     }
      res.status(200).json({ msg: document });
    })
    .catch((err) => {
@@ -27,7 +41,7 @@ class documentController{
   }
 
   static findDocument(req, res){
-    Document.findOne({ where: { id: req.params.id } })
+    db.Document.findOne({ where: { id: req.params.id } })
     .then((document) => {
       if (document) {
         res.status(200).json({ msg: document });
@@ -40,7 +54,7 @@ class documentController{
   }
 
   static updateDocument(req, res){
-    Document.findOne({ where: { id: req.params.id } })
+    db.Document.findOne({ where: { id: req.params.id } })
     .then((document) => {
       document.title = req.body.title;
       document.content = req.body.content;
@@ -54,12 +68,12 @@ class documentController{
   }
 
   static deleteDocument(req, res){
-    Document.findOne({ where: { id: req.params.id } })
+    db.Document.findOne({ where: { id: req.params.id } })
       .then((document) => {
         if (!document) {
           res.status(200).json({ msg: `User ${req.params.id} not found` });
         }
-        Document.destroy({ where: { id: req.params.id } })
+        db.Document.destroy({ where: { id: req.params.id } })
           .then((document) => {
             res.status(201).json({ msg: 'User deleted' });
           });
@@ -67,4 +81,4 @@ class documentController{
   }
 }
 
-module.exports = documentController;
+export default documentController;

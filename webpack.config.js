@@ -1,20 +1,16 @@
-import webpack from 'webpack';
-import path from 'path';
-
-module.exports ={
-  context: path.resolve('src'),
+module.exports = {
   entry: {
-    index: './index.jsx'
+    index: './client/app/index.jsx'
   },
   output: {
-    path: path.resolve('public/js'),
-    filename: '[name].js'
+    path: ('./client/public/js/'),
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['.js', '.jsx']
   },
   module:{
-    rules:[
+    rules: [
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
@@ -23,4 +19,4 @@ module.exports ={
       }
     ]
   }
-}
+};

@@ -2,15 +2,15 @@
 // static CanvasPathMethods
 // create endpoints
 
-const User = require('../models/index.js').User;
-const bcrypt = require('bcrypt');
+import db from '../models';
+import bcrypt from 'bcrypt';
 
 class userController{
   static login(req, res) {
-    User.findOne({ where: {username : req.body.username} })
+    db.User.findOne({ where: {username : req.body.username} })
     .then((user) => {
       if (bcrypt.compareSync(req.body.password, user.password_digest)){
-        res.status(200).json({ msg: 'Login Successful', user: user});
+        res.status(200).json({ msg: 'Login Successful', user});
       } else {
         res.status(500).json({error: 'Login Failed'});
       }
@@ -31,9 +31,9 @@ class userController{
     newUser.password = req.body.password;
     newUser.password_confirmation = req.body.password_confirmation;
 
-    User.create(newUser)
+    db.User.create(newUser)
     .then((user) => {
-       res.status(201).json({ msg: 'Created', user: user });
+       res.status(201).json({ msg: 'Created', user });
      })
     .catch((err) => {
        res.status(500).json({error: err.message});
@@ -42,7 +42,7 @@ class userController{
   }
 
   static instanceUsers(req, res){
-    User.findAll()
+    db.User.findAll()
     .then((user) => {
 
       res.status(200).json({ msg: user});
@@ -54,7 +54,7 @@ class userController{
   }
 
   static findUser(req, res) {
-    User.findOne({ where: { id: req.params.id } })
+    db.User.findOne({ where: { id: req.params.id } })
     .then((user) => {
       if (user) {
         res.status(200).json({ msg: user });
@@ -67,7 +67,7 @@ class userController{
   }
 
   static updateUser(req, res) {
-    User.findOne({ where: { id: req.params.id } })
+    db.User.findOne({ where: { id: req.params.id } })
     .then((user) => {
       user.fullName = req.body.fullName;
       user.password = req.body.password;
@@ -80,7 +80,7 @@ class userController{
   }
 
   static deleteUser(req, res){
-    User.findOne({ where: { id: req.params.id } })
+    db.User.findOne({ where: { id: req.params.id } })
       .then((user) => {
         if (!user) {
           res.status(200).json({ msg: `User ${req.params.id} not found` });
@@ -93,7 +93,7 @@ class userController{
   }
 
   static findAllDocument(req, res){
-    User.findOne({ where: { id: req.params.id }})
+    db.User.findOne({ where: { id: req.params.id }})
     .then((user) => {
       user.getDocuments().then((documents) => {
         res.status(200).json({ msg: documents});
@@ -105,4 +105,4 @@ class userController{
   }
 }
 
-module.exports = userController;
+export default userController;
