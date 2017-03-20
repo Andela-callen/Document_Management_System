@@ -35,6 +35,7 @@
     "express": "^4.14.1",
     "gulp": "^3.9.1",
     "interpret": "^1.0.1",
+    "jsonwebtoken": "^7.3.0",
     "morgan": "^1.8.1",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",

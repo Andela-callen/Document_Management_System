@@ -12,7 +12,7 @@ class documentController{
    .then((document) => {
      res.status(201).json({ msg: 'Document created', document } );
    }).catch((err) => {
-     res.status(500).json({ msg: err.message });
+     res.status(400).json({ msg: err.message });
    });
   }
 

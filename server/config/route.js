@@ -1,43 +1,38 @@
 import documentController from '../controller/documentsContoller';
 import usersController from '../controller/usersController';
-import express from 'express';
-const router = express.Router();
+import rolesController from '../controller/rolesController'
 
-router.post('/users/login', usersController.login);
+const routes = (router, authenticate) => {
 
-router.post('/users/logout', usersController.logout);
+  router.post('/users/login', usersController.login);
+  router.post('/users/logout', usersController.logout);
 
-router.post('/users/', usersController.createUser);
+  router.post('/users/', usersController.createUser);
+  router.get('/users/', usersController.instanceUsers);
+  router
+    .route('/users/:id')
+    .get(authenticate.checkToken, usersController.findUser)
+    .put(authenticate.checkToken, usersController.updateUser)
+    .delete(authenticate.checkToken, usersController.deleteUser);
 
-router.get('/users/', usersController.instanceUsers);
+  router.post('/documents/', documentController.createDocument);
+  router.get('/documents/', documentController.instanceDocuments);
+  router
+    .route('/documents/:id')
+    .get(authenticate.checkToken, documentController.findDocument)
+    .put(authenticate.checkToken, documentController.updateDocument)
+    .delete(authenticate.checkToken, documentController.deleteDocument);
 
-router.get('/users/:id', usersController.findUser);
+  router.get('/users/:id/documents', usersController.findAllDocument);
 
-router.put('/users/:id', usersController.updateUser);
+  router.post('/roles/', rolesController.createRole);
+  router.get('/roles/', rolesController.getAll);
 
-router.delete('/users/:id', usersController.deleteUser);
+  router
+    .route('/roles/:id')
+    // .get(authenticate.checkToken, usersController.findUser)
+   .put(rolesController.updateRole)
+    .delete(rolesController.deleteRole);
+}
 
-router.post('/documents/', documentController.createDocument);
-
-router.get('/documents/', documentController.instanceDocuments);
-
-router.get('/documents/:id', documentController.findDocument);
-
-router.put('/documents/:id', documentController.updateDocument);
-
-router.delete('/documents/:id', documentController.deleteDocument);
-
-router.get('/users/:id/documents', usersController.findAllDocument);
-
-
-export default router;
-
-// router.route('/api/users/:id')
-//   .get(Authenticate.isAdmin, users.getOne)
-//   .put(Authenticate.isAdmin, users.updateOne)
-//   .delete(Authenticate.isAdmin, users.deleteOne)
-
-// router.route('/api/documents/:id')
-// .get(Authenticate.isAdmin, document.getOne)
-// .put(Authenticate.isAdmin, document.updateOne)
-// .delete(Authenticate.isAdmin, document.deleteOne)
+export default routes;

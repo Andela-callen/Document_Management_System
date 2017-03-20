@@ -1,16 +1,23 @@
-// appropriate classes
-// static CanvasPathMethods
-// create endpoints
-
+require('dotenv').config();
 import db from '../models';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonWebToken';
+import helper from '../controller/helpers/helper';
+
+const secretKey = process.env.SECRET;
+
 
 class userController{
   static login(req, res) {
     db.User.findOne({ where: {username : req.body.username} })
     .then((user) => {
       if (bcrypt.compareSync(req.body.password, user.password_digest)){
-        res.status(200).json({ msg: 'Login Successful', user});
+        const loginObject = {
+        username: user.username
+      };
+      const token =jwt.sign(loginObject, secretKey, {expiresIn:'24h'});
+      user = helper.transformUser(user);
+        res.status(200).json({ msg: 'Login Successful', token, user});
       } else {
         res.status(500).json({error: 'Login Failed'});
       }
@@ -33,7 +40,15 @@ class userController{
 
     db.User.create(newUser)
     .then((user) => {
-       res.status(201).json({ msg: 'Created', user });
+      const userObject = {
+        username: user.username,
+        roleId: user.roleId,
+        id: user.id
+      };
+      const token =jwt.sign(userObject, secretKey, {expiresIn:'24h'});
+      user = helper.transformUser(user);
+       res.status(201)
+        .json({ msg: 'User successfully created', token,  user });
      })
     .catch((err) => {
        res.status(500).json({error: err.message});
