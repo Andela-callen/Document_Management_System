@@ -13,6 +13,7 @@ class userController{
     .then((user) => {
       if (bcrypt.compareSync(req.body.password, user.password_digest)){
         const loginObject = {
+          userId: user.id,
         username: user.username
       };
       const token =jwt.sign(loginObject, secretKey, {expiresIn:'24h'});
@@ -43,7 +44,7 @@ class userController{
       const userObject = {
         username: user.username,
         roleId: user.roleId,
-        id: user.id
+        userId: user.id
       };
       const token =jwt.sign(userObject, secretKey, {expiresIn:'24h'});
       user = helper.transformUser(user);

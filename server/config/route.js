@@ -15,11 +15,11 @@ const routes = (router, authenticate) => {
     .put(authenticate.checkToken, usersController.updateUser)
     .delete(authenticate.checkToken, usersController.deleteUser);
 
-  router.post('/documents/', documentController.createDocument);
-  router.get('/documents/', documentController.instanceDocuments);
+  router.post('/documents/', authenticate.checkToken, documentController.createDocument);
+  router.get('/documents/', authenticate.checkToken, documentController.getAllDocuments);
   router
     .route('/documents/:id')
-    .get(authenticate.checkToken, documentController.findDocument)
+    .get(authenticate.checkToken, documentController.getOneDocument)
     .put(authenticate.checkToken, documentController.updateDocument)
     .delete(authenticate.checkToken, documentController.deleteDocument);
 

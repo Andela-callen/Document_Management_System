@@ -1,7 +1,7 @@
 const Helper = {
   transformUser(user)  {
     const details = {
-      id: user.id,
+      userId: user.id,
       username: user.username,
       email: user.email,
       firstname: user.firstname,
@@ -9,6 +9,19 @@ const Helper = {
       roleId: user.roleId
     }
     return details;
+  },
+
+  transfromDocument(document) {
+    const docDetails = {
+     userId: document.userId,
+     title: document.title,
+     content: document.content,
+     accessType: document.accessType,
+     userId: document.userId,
+     createdAt: document.createdAt,
+     updateAt: document.updatedAt
+    };
+    return docDetails;
   },
 
   pagination(result, offset, limit) {

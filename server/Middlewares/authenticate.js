@@ -6,7 +6,7 @@ const secretKey = process.env.SECRET || '@loveChemIndustry';
 
 const Authenticate = {
   checkToken(req, res, next) {
-    const token = req.body.token || req.query.token || req.headers['x-access-token'];
+    const token = req.headers.authorization || req.headers['x-access-token'];
 
     //decode token
     if (token) {
