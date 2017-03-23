@@ -15,15 +15,18 @@ const routes = (router, authenticate) => {
     .put(authenticate.checkToken, usersController.updateUser)
     .delete(authenticate.checkToken, usersController.deleteUser);
 
+  router.get('/search/users/', authenticate.checkToken, usersController.searchUsers);
+
   router.post('/documents/', authenticate.checkToken, documentController.createDocument);
-  router.get('/documents/', authenticate.checkToken, documentController.getAllDocuments);
+  router.get('/documents/', authenticate.checkToken, authenticate.viewPermission, documentController.getAllDocuments);
   router
     .route('/documents/:id')
-    .get(authenticate.checkToken, documentController.getOneDocument)
-    .put(authenticate.checkToken, documentController.updateDocument)
+    .get(authenticate.checkToken, authenticate.viewPermission, documentController.getOneDocument)
+    .put(authenticate.checkToken, authenticate.docPermission, documentController.updateDocument)
     .delete(authenticate.checkToken, documentController.deleteDocument);
 
-  router.get('/users/:id/documents', usersController.findAllDocument);
+  router.get('/users/:id/documents', authenticate.checkToken, documentController.getDocumentForUser);
+  router.get('/search/documents/', authenticate.checkToken, documentController.searchDocument);
 
   router.post('/roles/', rolesController.createRole);
   router.get('/roles/', rolesController.getAll);
@@ -33,6 +36,8 @@ const routes = (router, authenticate) => {
     // .get(authenticate.checkToken, usersController.findUser)
    .put(rolesController.updateRole)
     .delete(rolesController.deleteRole);
+
+
 }
 
 export default routes;

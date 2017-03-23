@@ -18,11 +18,14 @@ class userController{
       };
       const token =jwt.sign(loginObject, secretKey, {expiresIn:'24h'});
       user = helper.transformUser(user);
-        res.status(200).json({ msg: 'Login Successful', token, user});
+       return res.status(200).json({ msg: 'Login Successful', token, user});
       } else {
-        res.status(500).json({error: 'Login Failed'});
+       return res.status(500).json({error: 'Login Failed'});
       }
-    });
+    })
+    .catch(() => {
+      return res.status(404).json({msg: 'Account does not exist'});
+     });
   }
 
   static logout(req, res) {
@@ -39,6 +42,23 @@ class userController{
     newUser.password = req.body.password;
     newUser.password_confirmation = req.body.password_confirmation;
 
+    db.User.findAndCountAll({
+      where: {
+        $or: [
+          { email: req.body.email},
+          { roleId: 1 }]
+      }
+    }).then ((returnedUsers) => {
+      const user = returnedUsers.rows;
+      const checkEmail = helper.checkUser(user, 'email', req.body.email);
+      const checkRoleId = helper.checkUser(user, 'roleId', Number(req.body.roleId));
+
+      if(checkEmail) {
+       return res.status(409).json({ msg: `This ${req.body.email} already exists`});
+      } else if (checkRoleId){
+       return res.status(409).json({msg: 'You do not have permission to create an Admin'})
+      }
+    
     db.User.create(newUser)
     .then((user) => {
       const userObject = {
@@ -48,23 +68,22 @@ class userController{
       };
       const token =jwt.sign(userObject, secretKey, {expiresIn:'24h'});
       user = helper.transformUser(user);
-       res.status(201)
+       return res.status(201)
         .json({ msg: 'User successfully created', token,  user });
      })
-    .catch((err) => {
-       res.status(500).json({error: err.message});
-     });
-
+    }).catch((err) => {
+      return res.status(500).json({error: err.message});
+    });
   }
 
   static instanceUsers(req, res){
     db.User.findAll()
     .then((user) => {
 
-      res.status(200).json({ msg: user});
+      return res.status(200).json({ msg: user});
     })
     .catch((err) => {
-      res.status(500).json({error: err.message});
+      return res.status(500).json({error: err.message});
     });
 
   }
@@ -73,12 +92,12 @@ class userController{
     db.User.findOne({ where: { id: req.params.id } })
     .then((user) => {
       if (user) {
-        res.status(200).json({ msg: user });
+        return res.status(200).json({ msg: user });
       } else {
-        res.status(500).json({ error: "User does not exist in the database"});
+        return res.status(500).json({ error: "User does not exist in the database"});
       }
     }).catch((err) => {
-      res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });
     });
   }
 
@@ -88,9 +107,9 @@ class userController{
       user.fullName = req.body.fullName;
       user.password = req.body.password;
       user.save().then(() => {
-        res.status(200).json({ msg: 'User updated' });
+        return res.status(200).json({ msg: 'User updated' });
       }).catch((err) => {
-        res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: err.message });
       });
     });
   }
@@ -99,11 +118,11 @@ class userController{
     db.User.findOne({ where: { id: req.params.id } })
       .then((user) => {
         if (!user) {
-          res.status(200).json({ msg: `User ${req.params.id} not found` });
+          return res.status(404).json({ msg: `User ${req.params.id} not found` });
         }
-        User.destroy({ where: { id: req.params.id } })
+        db.User.destroy({ where: { id: req.params.id } })
           .then((user) => {
-            res.status(201).json({ msg: 'User deleted' });
+            return res.status(201).json({ msg: 'User deleted' });
           });
       });
   }
@@ -112,12 +131,46 @@ class userController{
     db.User.findOne({ where: { id: req.params.id }})
     .then((user) => {
       user.getDocuments().then((documents) => {
-        res.status(200).json({ msg: documents});
-      });
+        return res.status(200).json({ msg: documents});
+      })
     })
     .catch((err) => {
-      res.status(404).json({ msg: err.message})
-    });
+      return res.status(500).json({ msg: err.message})
+    })
+  }
+
+  /**
+  * Search all Users
+  * @param {Object} req Request object
+  * @param {Object} res Response object
+  * @returns {Object} - Returns response object
+*/
+  static searchUsers(req, res) {
+    const query = {};
+    const userId = req.decoded.id;
+    const roleId = req.decoded.roleId;
+    const terms = req.query.text;
+    query.limit = (req.query.limit > 0) ? req.query.limit : 5;
+    query.offset = (req.query.offset > 0) ? req.query.offset : 0;
+    query.order = [['createdAt', 'DESC']];
+    query.where = { $or: [
+      { username: { $iLike: `%${terms}%`}}
+    ]};
+
+    db.User.findAndCountAll(query)
+      .then((user) =>{
+        if (!user.rows.length) {
+          return res.status(404).json({ message: 'Not found '})
+        }
+        const offset = query.offset;
+        const limit = query.limit;
+
+        const pagination = helper.pagination(user, offset, limit);
+        return res.status(200).json({ msg: user.rows, pagination });
+      })
+      .catch((err) => {
+        return res.status(500).json({error: err.message});
+      });
   }
 }
 

@@ -9,9 +9,9 @@ class documentController{
    db.Document.create(req.body)
    .then((document) => {
      const doc = helper.transfromDocument(document);
-     res.status(201).json({ msg: 'Document created', doc } );
+     return res.status(201).json({ msg: 'Document created', doc } );
    }).catch((err) => {
-     res.status(400).json({ msg: err.message });
+     return res.status(400).json({ msg: err.message });
    });
   }
 
@@ -22,7 +22,6 @@ class documentController{
   * @returns {Object} - Returns response object
 */
   static getAllDocuments(req, res){
-    // http://localhost:3000/api/users?limit=10&offset=5
     const userId = req.decoded.userId;
     const roleId = req.decoded.roleId;
     const query = {};
@@ -41,17 +40,17 @@ class documentController{
     })
     db.Document.findAndCountAll(query)
    .then((document) => {
-     if (!document) {
+     if (!document.rows.length) {
        return res.status(404).json({ message: 'Document not found '})
      }
      const offset = query.offset;
      const limit = query.limit;
 
      const pagination = helper.pagination(document, offset, limit);
-     res.status(200).json({ msg: document.rows, pagination });
+     return res.status(200).json({ msg: document.rows, pagination });
    })
    .catch((err) => {
-     res.status(500).json({error: err.message});
+     return res.status(500).json({error: err.message});
    });
   }
 
@@ -66,12 +65,12 @@ class documentController{
     .then((document) => {
       if (document) {
         const doc = helper.transfromDocument(document);
-        res.status(200).json({ msg: doc });
+        return res.status(200).json({ msg: doc });
       } else {
-        res.status(404).json({ error: 'Document does not exist in the database'});
+        return res.status(404).json({ error: 'Document does not exist in the database'});
       }
     }).catch((err) => {
-      res.status(500).json({ msg: err.message });
+      return res.status(500).json({ msg: err.message });
     });
   }
 
@@ -83,7 +82,36 @@ class documentController{
   */
 
   static getDocumentForUser(req,res) {
+    const queryId = Number(req.params.id);
+    const userId = req.decoded.userId;
+    const roleId = req.decoded.roleId;
+    const query = {};
+    query.limit = (req.query.limit > 0) ? req.query.limit : 5;
+    query.offset = (req.query.offset > 0) ? req.query.offset : 0;
+    query.order = [['createdAt', 'DESC']];
 
+    db.Role.findById(roleId)
+    .then((role) => {
+      if (role.title === 'Admin' || userId === queryId){
+        query.where = {userId: userId}
+      } else {
+        query.where = { userId: userId, $and: {access: 'public'} };
+      }
+    })
+    db.Document.findAndCountAll(query)
+   .then((document) => {
+     if (!document.rows.length) {
+       return res.status(404).json({ message: 'Document not found '})
+     }
+     const offset = query.offset;
+     const limit = query.limit;
+
+     const pagination = helper.pagination(document, offset, limit);
+     return res.status(200).json({ msg: document.rows, pagination });
+   })
+   .catch((err) => {
+     return res.status(500).json({error: err.message});
+   });
   }
 
 /**
@@ -95,18 +123,16 @@ class documentController{
   static updateDocument(req, res){
     db.Document.findOne({ where: { id: req.params.id } })
     .then((document) => {
-      if (!document) {
-        res.status(404).json({msg:'Document not found'})
+      if (!document.rows.length) {
+        return res.status(404).json({msg:'Document not found'})
       } else {
         req.body.userId = document.userId;
         document.update(req.body).then(() => {
-          res.status(200).json({ msg: 'Document updated' });
+          return res.status(200).json({ msg: 'Document updated' });
         }).catch((err) => {
-          res.status(500).json({ error: err.message });
+          return res.status(500).json({ error: err.message });
         });
       }
-      // document.title = req.body.title;
-      // document.content = req.body.content;
     });
 
   }
@@ -114,15 +140,64 @@ class documentController{
   static deleteDocument(req, res){
     db.Document.findOne({ where: { id: req.params.id } })
       .then((document) => {
-        if (!document) {
-          res.status(404).json({ msg: `Document ${req.params.id} not found` });
+        if (!document.rows.length) {
+          return res.status(404).json({ msg: `Document ${req.params.id} not found` });
         }
         db.Document.destroy({ where: { id: req.params.id } })
           .then((document) => {
-            res.status(201).json({ msg: 'Document deleted' });
+            return res.status(201).json({ msg: 'Document deleted' });
           });
       });
   }
-}
+
+ /**
+  * Search all Documents
+  * @param {Object} req Request object
+  * @param {Object} res Response object
+  * @returns {Object} - Returns response object
+*/
+  static searchDocument(req, res) {
+    const query = {};
+    const userId = req.decoded.userId;
+    const roleId = req.decoded.roleId;
+    const terms = req.query.text;
+    query.limit = (req.query.limit > 0) ? req.query.limit : 5;
+    query.offset = (req.query.offset > 0) ? req.query.offset : 0;
+    query.order = [['createdAt', 'DESC']];
+
+    db.Role.findById(roleId)
+    .then((role) => {
+      if (role && role.title === 'Admin'){
+        query.where ={ $or: [
+          {title: { $iLike: `%${terms}%`}},
+          {content: { $iLike: `%${terms}%`}}
+        ]};
+      } else {
+        query.where ={ $or: [
+          {title: { $iLike: `%${terms}%`}},
+          {content: { $iLike: `%${terms}%`}}],
+          $and: { $or: [{ access: 'public'}, { userId: userId }]
+        }};
+      }
+      db.Document.findAndCountAll(query)
+      .then((document) =>{
+        if (!document.rows.length) {
+          return res.status(404).json({ message: 'Not found '})
+        }
+        const offset = query.offset;
+        const limit = query.limit;
+
+        const pagination = helper.pagination(document, offset, limit);
+        return res.status(200).json({ msg: document.rows, pagination });
+      })
+      .catch((err) => {
+        return res.status(500).json({error: err.message});
+      });
+    })
+    .catch((err) => {
+        return res.status(500).json({error: err.message});
+      });
+  }
+};
 
 export default documentController;
