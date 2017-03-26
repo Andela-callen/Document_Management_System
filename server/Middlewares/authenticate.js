@@ -25,7 +25,7 @@ const Authenticate = {
       //return error message, if there is no token
       return res.status(403).send({
         success: false,
-        messaage: 'No token provided.'
+        msg: 'No token provided.'
       });
     }
   },
@@ -44,7 +44,7 @@ const Authenticate = {
             next();
           } else {
             return res.status(403)
-              .send({ message: 'You are not allowed to access this document' });
+              .send({ msg: 'You are not allowed to access this document' });
           }
         });
       }
@@ -85,7 +85,7 @@ const Authenticate = {
               next();
             } else {
               return res.status(403)
-                .send({ message: 'You are not allowed to view this document' });
+                .send({ msg: 'You are not allowed to view this document' });
             }
           }
         });

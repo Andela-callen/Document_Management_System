@@ -20,7 +20,7 @@ class userController{
       user = helper.transformUser(user);
        return res.status(200).json({ msg: 'Login Successful', token, user});
       } else {
-       return res.status(500).json({error: 'Login Failed'});
+       return res.status(403).json({error: 'Login Failed'});
       }
     })
     .catch(() => {
@@ -29,7 +29,13 @@ class userController{
   }
 
   static logout(req, res) {
+    const token = req.headers.authorization || req.headers['x-access-token'];
 
+    if (!token) {
+      return res.status(400).json({ msg: 'User not logged in before' });
+    }
+
+    return res.status(200).json({ msg: 'User successfully logged out' });
   }
 
   static createUser(req, res){
@@ -77,24 +83,29 @@ class userController{
   }
 
   static instanceUsers(req, res){
-    db.User.findAll()
+    const query = {};
+    query.limit = (req.query.limit > 0) ? req.query.limit : 5;
+    query.offset = (req.query.offset > 0) ? req.query.offset : 0;
+    query.order = [['createdAt', 'DESC']];
+
+    db.User.findAndCountAll(query)
     .then((user) => {
+      const offset = query.offset;
+      const limit = query.limit;
 
-      return res.status(200).json({ msg: user});
+      const pagination = helper.pagination(user, offset, limit);
+      return res.status(200).json({ msg: 'Success', users: user.rows, pagination});
     })
-    .catch((err) => {
-      return res.status(500).json({error: err.message});
-    });
-
   }
 
   static findUser(req, res) {
     db.User.findOne({ where: { id: req.params.id } })
     .then((user) => {
       if (user) {
+        user = helper.transformUser(user)
         return res.status(200).json({ msg: user });
       } else {
-        return res.status(500).json({ error: "User does not exist in the database"});
+        return res.status(404).json({ error: "User does not exist in the database"});
       }
     }).catch((err) => {
       return res.status(500).json({ msg: err.message });
@@ -102,29 +113,48 @@ class userController{
   }
 
   static updateUser(req, res) {
-    db.User.findOne({ where: { id: req.params.id } })
+    const roleId = req.decoded.roleId;
+    db.User.findById(req.params.id)
     .then((user) => {
-      user.fullName = req.body.fullName;
-      user.password = req.body.password;
-      user.save().then(() => {
-        return res.status(200).json({ msg: 'User updated' });
-      }).catch((err) => {
-        return res.status(500).json({ error: err.message });
+      if (!user) {
+        return res.status(404).json({msg: 'User not found'});
+      }
+
+      db.Role.findById(roleId)
+       .then((role) => {
+         if (role && role.title !== 'Admin') {
+           req.body.roleId = user.roleId;
+         }
+         user.update(req.body).then((userUpdate) => {
+           const updatedUser = helper.transformUser(userUpdate);
+           return res.status(200).json({ msg: 'User updated' });
+          }).catch((err) => {
+            return res.status(500).json({ error: err.message });
+          });
       });
     });
   }
 
   static deleteUser(req, res){
     db.User.findOne({ where: { id: req.params.id } })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({ msg: `User ${req.params.id} not found` });
-        }
-        db.User.destroy({ where: { id: req.params.id } })
+    .then((role) => {
+      if (role) {
+        db.User.findAndCountAll({ where: { roleId: role.id } })
           .then((user) => {
-            return res.status(201).json({ msg: 'User deleted' });
+            const admin = user.rows[0].dataValues.id;
+            if (user.count < 2 && admin === Number(req.params.id)){
+              return res.status(403).json({ msg: 'You cannot delete the Admin'});
+            }
+            if (!user) {
+              return res.status(404).json({ msg: `User ${req.params.id} not found` });
+            }
+            db.User.destroy({ where: { id: req.params.id } })
+              .then((user) => {
+                return res.status(200).json({ msg: 'User deleted' });
+              });
           });
-      });
+      }
+    })
   }
 
   static findAllDocument(req, res){

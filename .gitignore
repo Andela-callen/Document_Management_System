@@ -45,3 +45,9 @@ dist
 test.js
 
 .vscode
+
+.babelrc
+
+.hound.yml
+
+.travis.yml

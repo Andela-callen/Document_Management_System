@@ -35,7 +35,7 @@ class roleController{
      return res.status(200).json({result: result.rows, pagination});
     })
     .catch((err) => {
-      return res.status(500).json({error: err.message})});
+      return res.status(404).json({msg: 'Not Found'})});
   }
 
     
@@ -45,12 +45,12 @@ class roleController{
     db.Role.findOne({ where: { id: req.params.id } })
     .then((role) => {
       if (role && role.title === 'Admin') {
-        return res.status(403).json({ message: 'can\'t update admin role' });
+        return res.status(403).json({ msg: 'can\'t update admin role' });
       }
       db.Role.findById(req.params.id)
       .then((role) => {
         if (!role){
-          return res.status(404).json({ message: 'role does not exist' });
+          return res.status(404).json({ msg: 'role does not exist' });
         }
         role.save().then(() => {
           return res.status(200).json({ msg: 'Role updated' });
@@ -69,11 +69,11 @@ class roleController{
           return res.status(403).json({ msg: 'can\'t delete Admin role'});
         }
         if (role < 1) {
-          return res.status(200).json({ msg: `No role found` });
+          return res.status(404).json({ msg: `No role found` });
         }
         db.Role.destroy({ where: { id: req.params.id } })
           .then((role) => {
-            return res.status(201).json({ msg: 'Role deleted' });
+            return res.status(200).json({ msg: 'Role deleted' });
           }). catch ((err) => {
             return res.status(500).json({ msg : err.message})});
       });

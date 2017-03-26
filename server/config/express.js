@@ -19,7 +19,7 @@ app.use(express.static('client/public'));
 app.use(router);
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname +'/../../client/index.html'));
+  return res.sendFile(path.join(__dirname +'/../../client/index.html'));
 });
 
 export default app;

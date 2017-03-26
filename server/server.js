@@ -4,7 +4,7 @@ import debug from 'debug';
 import app from './config/express';
 import db from './models';
 
-const port = process.env.PORT;
+const port = process.env.PORT || 'loveEveryoneStayPeaceful&Explore';
 
 debug('dms:server');
 
