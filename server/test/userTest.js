@@ -37,8 +37,7 @@ describe('User Suite', () => {
         .end((err, res) => {
           token = res.body.token;
           userAdmin = res.body.user;
-          console.log('aklsjadkljadlkjads' + userAdmin)
-          deleteUser = res.body.user.id;
+          deleteUser = res.body.user.userId;
           done();
         });
     });
@@ -61,6 +60,7 @@ describe('create Regular and POST /users/', () => {
         .send(secondUser)
         .end((err, res) => {
           token = res.body.token;
+          userDetails = res.body.user;
           expect(res.status).to.equal(201);
           expect(res.body.msg).to.equal('User successfully created')
           done();
@@ -127,7 +127,7 @@ describe('create Regular and GET', () => {
 
     it('should update the user\'s details for the admin or owner', (done) => {
       request
-        .put('/users/2')
+        .put(`/users/${userDetails.userId}`)
         .set('authorization', token)
         .send(updateDetails)
         .end((err, res) => {
@@ -140,7 +140,7 @@ describe('create Regular and GET', () => {
     it('should return an error if updating a non-existing user',
       (done) => {
         request
-          .put('/users/8')
+          .put(`/users/${userId * 8}`)
           .set('authorization', token)
           .send(updateDetails)
           .end((err, res) => {
@@ -159,7 +159,7 @@ describe('create Regular and GET', () => {
         .post('/users/login')
         .send(secondUser)
         .end((err, res) => {
-          deleteUser = res.body.user.id;
+          deleteUser = res.body.user.userId;
           token = res.body.token;
           done();
         });
@@ -167,8 +167,8 @@ describe('create Regular and GET', () => {
 
     it('should return an error when trying to delete the admin', (done) => {
       request
-        .delete('/users/1')
-        .set('Authorization', token)
+        .delete(`/users/${userAdmin.userId}`)
+        .set('authorization', token)
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).to.equal(403);
@@ -177,14 +177,37 @@ describe('create Regular and GET', () => {
         });
     });
 
-    it('should delete a role if the role exists', (done) => {
+    it('should return an error if the user does not have admin role',
+      (done) => {
+        request
+          .delete(`/users/${deleteUser}`)
+          .set('authorization', token)
+          .end((err, res) => {
+            if (err) return done(err);
+            expect(res.status).to.equal(403);
+            done();
+          });
+      });
+
+      xit('should return an error if the user does not exist', (done) => {
       request
-        .delete('/roles/2')
+        .delete(`/users/${deleteUser}`)
+        .set('authorization', token)
+        .end((err, res) => {
+          if (err) return done(err);
+         // expect(res.status).to.equal(404);
+          expect(res.body.msg).to.equal(`User ${userId} not found`)
+          done();
+        });
+    });
+
+    xit('should delete a user', (done) => {
+      request
+        .delete(`/users/${userAdmin.userId}`)
         .set('authorization', token)
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).to.equal(200);
-          expect(res.body.msg).to.equal('Role deleted');
           done();
         });
     });

@@ -34,7 +34,7 @@ const Authenticate = {
   docPermission(req, res, next) {
     const docId = Number(req.params.id);
     const userId = req.decoded.userId;
-    const roleId = req.decoded.RoleId;
+    const roleId = req.decoded.roleId;
     db.Document.findById(docId).then((document) => {
       if (document && document.userId === userId) {
         next();
@@ -54,16 +54,16 @@ const Authenticate = {
   // userPermission(req, res, next) {
   //   const userId = Number(req.params.id);
   //   const ownerId = req.decoded.userId;
-  //   const roleId = req.decoded.RoleId;
+  //   const roleId = req.decoded.roleId;
   //   db.User.findById(ownerId).then((user) => {
   //     if (user && user.id === userId) {
   //       next();
   //     } else {
   //       db.Role.findById(roleId).then((role) => {
-  //         if (role && role.title === 'admin') {
+  //         if (role && role.title === 'Admin') {
   //           next();
   //         } else {
-  //           return res.status(403).send({ message: 'You are not the owner' });
+  //           return res.status(403).send({ message: 'You are not authorized to update user' });
   //         }
   //       });
   //     }

@@ -49,5 +49,3 @@ test.js
 .babelrc
 
 .hound.yml
-
-.travis.yml
