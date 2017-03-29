@@ -27,7 +27,7 @@ class Signup extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    $.post('/users', this.state)
+    $.post('/api/users', this.state)
     .done((data) => {
       console.log(data);
     });
