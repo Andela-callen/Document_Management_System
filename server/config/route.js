@@ -12,7 +12,7 @@ const routes = (router, authenticate) => {
   router
     .route('/users/:id')
     .get(authenticate.checkToken, usersController.findUser)
-    .put(authenticate.checkToken, usersController.updateUser)
+    .put(authenticate.checkToken, authenticate.userPermission, usersController.updateUser)
     .delete(authenticate.checkToken, usersController.deleteUser);
 
   router.get('/search/users/', authenticate.checkToken, usersController.searchUsers);

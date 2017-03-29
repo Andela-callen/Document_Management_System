@@ -69,6 +69,7 @@ class userController{
     .then((user) => {
       const userObject = {
         username: user.username,
+        email: user.email,
         roleId: user.roleId,
         userId: user.id
       };
@@ -105,10 +106,8 @@ class userController{
         user = helper.transformUser(user)
         return res.status(200).json({ msg: user });
       } else {
-        return res.status(404).json({ error: "User does not exist in the database"});
+        return res.status(404).json({ msg: "User does not exist in the database"});
       }
-    }).catch((err) => {
-      return res.status(500).json({ msg: err.message });
     });
   }
 
@@ -128,8 +127,6 @@ class userController{
          user.update(req.body).then((userUpdate) => {
            const updatedUser = helper.transformUser(userUpdate);
            return res.status(200).json({ msg: 'User updated' });
-          }).catch((err) => {
-            return res.status(500).json({ error: err.message });
           });
       });
     });

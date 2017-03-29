@@ -32,8 +32,8 @@ const helper = {
     email : 'chiomsky@email.com',
     password : '123456',
     password_confirmation : '123456'
-
   },
+
   thirdUser: {
     username : faker.internet.userName(),
     firstname : faker.name.firstName(),
@@ -41,8 +41,16 @@ const helper = {
     email : faker.internet.email(),
     password : '987765',
     password_confirmation : '987765'
-
   },
+  fourthUser: {
+    username : faker.internet.userName(),
+    firstname : faker.name.firstName(),
+    lastname : faker.name.lastName(),
+    email : faker.internet.email(),
+    password : '865347',
+    password_confirmation : '865347'
+  },
+
   updateUserDetails: {
     username : faker.internet.userName(),
     firstname : faker.name.firstName(),

@@ -5,7 +5,7 @@ import chai from 'chai';
 import jwt from'jsonwebtoken';
 import db from  '../models/';
 import app from '../config/express';
-import helper from '../test/testHelper/helper';
+import helper from '../test/testHelper/user.helper';
 
 dotenv.config();
 
@@ -45,7 +45,7 @@ describe('Roles', () => {
   });
 
 describe('Create Role POST /roles/', () => {
-  it('should create a new role is not existing',
+  it('should create a new role if not existing',
     (done) => {
       request
         .post('/roles')
