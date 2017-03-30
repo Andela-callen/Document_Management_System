@@ -1,7 +1,8 @@
 const path = require('path');
 module.exports = {
+  watch: true,
   entry: {
-    index: './client/app/index.jsx'
+    index: './client/index.js'
   },
   output: {
     path: path.resolve(__dirname, './client/public/js/'),

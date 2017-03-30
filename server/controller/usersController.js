@@ -18,9 +18,9 @@ class userController{
       };
       const token =jwt.sign(loginObject, secretKey, {expiresIn:'24h'});
       user = helper.transformUser(user);
-       return res.status(200).json({ msg: 'Login Successful', token, user});
+        res.status(200).json({ msg: 'Login Successful', token, user});
       } else {
-       return res.status(403).json({error: 'Login Failed'});
+        res.status(403).json({error: 'Login Failed'});
       }
     })
     .catch(() => {
