@@ -68,7 +68,14 @@ class CreateDocument extends React.Component {
           </div>
           </div>
         </div>
-        
+        {/*<div onChange={this.handleChange}>
+        <select className="form-control" value={this.state.access} name="access" label="XXXXx">
+            <option value="">Choose your option</option>
+            <option value= "private">Private</option>
+            <option value="public">Pubilc</option>
+            <option value="role">role</option>
+          </select>
+          </div>*/}
         <div>
           <button className="waves-effect btn" onClick={this.handleSubmit} type="button" value="submit" />
         </div>
@@ -89,24 +96,6 @@ class CreateDocument extends React.Component {
     );
   }
 };
-
-// CreateDocument.propTypes = {
-//   createDocument: React.PropTypes.func.isRequired
-// };
-
-// const stateToProps = (state, docProps) => {
-//     console.log(state.documents)
-//   return {
-//     uploadDocsSuccess: state.documents
-//   }
-// }
-
-// const actionsToDispatch = (dispatch) => {
-//   return {
-//     CreateDocument: (firstname, lastname, username, email, password, password_confirmation) =>
-//       dispatch(signupEvent(firstname, lastname, username, email, password, password_confirmation))
-//   };
-// }
 
 const mapStateToProps = (state, ownProps) => {
   return {

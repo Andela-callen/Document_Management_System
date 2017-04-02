@@ -6,39 +6,20 @@ export const UPLOAD_DOCS_SUCCESS = 'UPLOAD_DOCS_SUCCESS';
 export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJECTED'
 // export const GET_DOCS = 'GET_DOCS';
 
-export const createDocSuccess = (document) => {
+const createDocSuccess = (document) => {
   return { type: CREATE_DOC_SUCCESSFUL, document }
 }
 const uploadDocsSuccess = (document) => {
   return {
-    type: UPLOAD_DOCS_SUCCESS,
-    docs };
+    type: UPLOAD_DOCS_SUCCESS, payload: document };
 }
-// const uploadDocsSuccess = (document) => {
-//   return {
-//     type: types.UPLOAD_DOCS_SUCCESS,
-//     docs
-//   };
-// }
 
-// export function getDocument(id) {
-//   return {
-//     type: types.GET_DOCUMENT,
-//     id
-//   };
-// }
-// const uploadDocument = (document) => {
-//   return dispatch => axios.get('/api/documents', {
-//     headers: {
-//       'Authority': window.localStorage.getItem('token')
-//     }
-//   }).then((res) => {
-//     dispatch(uploadDocsSuccess(res.data));
-//   });
-// };
+const uploadDocsRejected = (document) => {
+  return {
+    type: UPLOAD_DOCS_REJECTED, payload: err };
+}
 
-
-export const createDocument = (title, content, access, userId) => {
+const createDocument = (title, content, access, userId) => {
   return(dispatch) => {
     return axios.post('/api/documents/', {
     title,
@@ -61,9 +42,23 @@ export const createDocument = (title, content, access, userId) => {
 };
 
 
-const getDocuments = (id) => {
-  return {
-    type: types.GET_DOCUMENT,
-    id
+const getAllDocuments = () => {
+  const config = {
+    headers: {
+      Authorization: window.localStorage.getItem('token')
+    }
+  };
+  return (dispatch) => {
+    return axios.get('/api/documents/', config)
+    .then((response) => {
+      if (response.status === 200 ){
+        dispatch(uploadDocsSuccess(response.data));
+      }
+    }).catch((err) => {
+      dispatch(uploadDocsRejected(err.data));
+    })
   }
 };
+
+
+export { createDocument, createDocSuccess, getAllDocuments };

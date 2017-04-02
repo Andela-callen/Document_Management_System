@@ -1,8 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 
 class Main extends React.Component {
+  constructor(props) {
+    super(props);
+    this.logOut = this.logOut.bind(this);
+  }
+
+  logOut(){
+    localStorage.clear('token');
+    browserHistory.push('/')
+  }
 
   componentDidMount () {
     $(".dropdown-button").dropdown();
@@ -37,7 +46,7 @@ class Main extends React.Component {
 
                 </li>
                 <li><Link to="/profile">Profile</Link></li>
-                <li><Link to="/logout">Logout</Link></li>
+                <li><a onClick={this.logOut}><Link to ="/home">Logout</Link></a></li>
                 <li><Link to="/login">Login</Link></li>
                 <li><Link to="/signup">Signup</Link></li>
               </ul>

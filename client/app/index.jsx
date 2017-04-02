@@ -11,6 +11,7 @@ import initialState from './store/initialState'
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore.js'
 import loggedIn from './actions/authAction';
+import DocumentDetail from './components/documents/documentDetail';
 
 let store = configureStore(initialState);
 
@@ -22,6 +23,7 @@ let store = configureStore(initialState);
         <Route path="/login" component={Login} />
         <Route path="/dashboard" component={Dashboard} onEnter={loggedIn} />
         <Route path="/createDocument" component={CreateDocument} onEnter={loggedIn} />
+        <Route path="/documents/:id" component={DocumentDetail} />
       </Route>
     </Router>
   </Provider>,
