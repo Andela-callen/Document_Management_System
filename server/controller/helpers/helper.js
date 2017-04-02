@@ -30,8 +30,7 @@ const Helper = {
      userId: document.userId,
      title: document.title,
      content: document.content,
-     accessType: document.accessType,
-     userId: document.userId,
+     access: document.access,
      createdAt: document.createdAt,
      updateAt: document.updatedAt
     };

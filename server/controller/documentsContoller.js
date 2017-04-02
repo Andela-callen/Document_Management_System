@@ -5,13 +5,12 @@ import helper from '../controller/helpers/helper';
 class documentController{
   static createDocument(req, res){
     req.body.userId = req.decoded.userId;
-    console.log(req)
    db.Document.create(req.body)
    .then((document) => {
      const doc = helper.transfromDocument(document);
      return res.status(201).json({ msg: 'Document created', doc } );
    }).catch((err) => {
-     return res.status(400).json({ msg: err.message });
+     return res.status(500).json({ msg: err.message });
    });
   }
 
@@ -197,7 +196,7 @@ class documentController{
     .catch((err) => {
         return res.status(500).json({error: err.message});
       });
-  }
+  }x
 };
 
 export default documentController;
