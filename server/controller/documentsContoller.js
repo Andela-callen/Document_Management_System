@@ -122,7 +122,8 @@ class documentController{
   static updateDocument(req, res){
     db.Document.findOne({ where: { id: req.params.id } })
     .then((document) => {
-      if (!document.rows.length) {
+      console.log(document)
+      if (!document) {
         return res.status(404).json({msg:'Document not found'})
       } else {
         req.body.userId = document.userId;

@@ -13,7 +13,7 @@ class CreateDocument extends React.Component {
     this.state = {
       title: '',
       content: '',
-      access: 'public',
+      access: '',
       userId: jwt.decode(localStorage.getItem('token')).userId
     };
 
@@ -34,6 +34,7 @@ class CreateDocument extends React.Component {
   //   }
   // }
   handleChange(event) {
+    console.log(event)
     const changeProps = {};
     changeProps[event.target.name] = event.target.value;
     this.setState(changeProps);
@@ -46,7 +47,7 @@ class CreateDocument extends React.Component {
     } else {
       this.props.createDocument(this.state.title,
        this.state.content, 
-       'public', 
+       this.state.access, 
        jwt.decode(localStorage.getItem('token')).userId)
        .then(() => {
          toastr.success('Document created');
@@ -68,14 +69,14 @@ class CreateDocument extends React.Component {
           </div>
           </div>
         </div>
-        {/*<div onChange={this.handleChange}>
-        <select className="form-control" value={this.state.access} name="access" label="XXXXx">
+        <div >
+        <select onChange={this.handleChange} className="browser-default" name="access" label="XXXXx" value={this.state.access}>
             <option value="">Choose your option</option>
             <option value= "private">Private</option>
             <option value="public">Pubilc</option>
             <option value="role">role</option>
           </select>
-          </div>*/}
+          </div>
         <div>
           <button className="waves-effect btn" onClick={this.handleSubmit} type="button" value="submit" />
         </div>

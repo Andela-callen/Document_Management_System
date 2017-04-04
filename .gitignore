@@ -49,3 +49,7 @@ test.js
 .babelrc
 
 .hound.yml
+
+client/public/js/*
+
+client/public

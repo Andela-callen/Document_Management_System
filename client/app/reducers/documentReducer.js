@@ -1,13 +1,15 @@
 import {UPLOAD_DOCS_SUCCESS} from '../actions/documentAction';
 import {CREATE_DOC_SUCCESSFUL} from '../actions/documentAction';
 import { UPLOAD_DOCS_REJECTED } from '../actions/documentAction';
+import { UPDATE_DOC_SUCCESS } from '../actions/documentAction'
 
 const initialState = {
   document: {},
   documents: [],
   error: {},
   uploadDocsSuccess: false,
-  docCreatedSuccess: false
+  docCreatedSuccess: false,
+  updateDocSuccess: false
 
 }
 
@@ -20,6 +22,8 @@ export default function documentReducer(state = initialState, action) {
       );
     case UPLOAD_DOCS_REJECTED:
       return Object.assign({}, state, { error: action.payload},);
+    case UPDATE_DOC_SUCCESS:
+      return Object.assign({}, state, {error: action.payload },);
     default:
       return state;
   }

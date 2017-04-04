@@ -1,5 +1,6 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
+import { Navbar, NavItem, Icon } from 'react-materialize';
 
 
 class Main extends React.Component {
@@ -14,10 +15,58 @@ class Main extends React.Component {
   }
 
   componentDidMount () {
-    $(".dropdown-button").dropdown();
+    // $(".dropdown-button").dropdown();
   }
 
-  render() {
+  renderNavBar() {
+    const token = localStorage.getItem('token');
+      return (
+        <div>
+          <nav>
+            <div className="nav-wrapper light-blue darken-3">
+              <Link to="/" className="brand-logo">DocumentIt!</Link>
+              <ul id="nav-mobile" className="right hide-on-med-and-down">
+                { !token &&  <li> <Link to="/signup"> Sign Up </Link></li> }
+                { !token &&   <li> <Link to="/login"> Login </Link></li> }
+                { token &&   <li>
+                  <form>
+                    <div className="input-field">
+                      <input id="search" type="search" required />
+                      <label htmlFor="search"><i className="material-icons">search</i></label>
+                      <i className="material-icons">close</i>
+                    </div>
+                  </form>
+                  </li>}
+                { token &&  <li>
+                  <ul id="dropdown1" className="dropdown-content">
+                    <li><Link to="/profile">Profile</Link></li>
+                    <li className="divider"></li>
+                    <li><Link to="/createDocument">Create Document</Link></li>
+                  </ul>
+                  <ul className="right hide-on-med-and-down">
+                    <li><a className="dropdown-button" data-activates="dropdown1">Dropdown<i className="material-icons right">arrow_drop_down</i></a></li>
+                  </ul>
+                  </li> }
+
+                { token &&  <li> <Link to="/dashboard"> Dashboard</Link></li>}
+                { token && <li><a onClick={this.logOut}><Link to ="/home">Logout</Link></a></li>}
+                </ul>
+            </div>
+          </nav>
+        </div>
+      );
+    }
+
+    render() {
+      return (
+        <div>
+        {this.renderNavBar()}
+        {this.props.children}
+        </div>
+      )
+  }
+
+  /*render() {
     return (
       <div>
         <div>
@@ -57,7 +106,7 @@ class Main extends React.Component {
         {this.props.children}
       </div>
     );
-  }
+  }*/
 }
 
 export default Main;

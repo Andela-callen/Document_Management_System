@@ -9,7 +9,6 @@ export default class AllDocuments extends React.Component {
 
   render() {
     const { documents } = this.props;
-    console.log("documents", documents);
     const mappedDocs = documents.map((document) =>
       <li className="card-panel" key={document.id}>
         <Link to={`/documents/${document.id}`}>
