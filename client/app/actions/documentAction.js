@@ -7,6 +7,8 @@ export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJEsCTED'
 export const UPDATE_DOC_SUCCESS = 'UPDATE_DOC_SUCCESS';
 export const DELETE_DOCUMENT_SUCCESS = 'DELETE_DOCUMENT_SUCCESS';
 export const DELETE_DOCUMENT_REJECTED = 'DELETE_DOCUMENT_REJECTED';
+export const SEARCH_DOCUMENT_SUCCESS = 'SEARCH_DOCUMENT_SUCCESS';
+export const SEARCH_DOCUMENT_REJECTED = 'SEARCH_DOCUMENT_REJECTED';
 
 // export const GET_DOCS = 'GET_DOCS';
 
@@ -28,11 +30,19 @@ export const updateDocumentSuccess = (updated) => {
     type: UPDATE_DOC_SUCCESS, payload: err};
 }
 
-export const docDeletedSuccess = (deleteDoc) => {
-  return { type: DELETE_DOCUMENT_SUCCESS, deleteDoc };
+export const docDeletedSuccess = (docId) => {
+  return { type: DELETE_DOCUMENT_SUCCESS, payload: docId };
 }
 export const docDeletedRejected = (err) => {
   return { type: DELETE_DOCUMENT_REJECTED, payload: err };
+}
+
+export const searchDocumentSuccess = (result) => {
+  return { type: SEARCH_DOCUMENT_SUCCESS, payload: result };
+}
+
+export const searchDocumentRejected = (error) => {
+  return { type: SEARCH_DOCUMENT_SUCCESS, payload: error };
 }
 
 const createDocument = (title, content, access, userId) => {
@@ -76,6 +86,26 @@ const getAllDocuments = () => {
   }
 };
 
+const searchDocuments = (query) => {
+  const config = {
+    headers: {
+      Authorization: window.localStorage.getItem('token'),
+    }
+  };
+  console.log('Here');
+  return (dispatch) => {
+    return axios.get(`/api/search/documents/?text=${query}`, config)
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch(searchDocumentSuccess(response.data));
+      }
+    })
+    .catch((err) => {
+      dispatch(searchDocumentRejected(err.data));
+    })
+  }
+}
+
 const updateDocument = (title, content, access, docId) => {
   const config ={
     headers: {
@@ -97,15 +127,29 @@ const updateDocument = (title, content, access, docId) => {
 };
 
  const deleteDocument = (docId) => {
-  return (dispatch) => {
-    axios.delete(`/api/documents/${DocId}`, {
+     const config = {
       headers: {
-        authorization: window.localStorage.getItem('token'),
-      }
-    }).catch((err) => {
-      dispatch(docDeletedRejected(err.data));
-    });
-  };
+          Authorization: window.localStorage.getItem('token'),
+        }
+     };
+     return (dispatch) => {
+      return axios.delete(`/api/documents/${docId}`, config)
+      .then((response) => {
+        if (response.status === 201) {
+          dispatch(docDeletedSuccess(docId));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(docDeletedRejected(err.data));
+      });
+    };
  }
 
-export { createDocument, getAllDocuments, updateDocument, deleteDocument };
+export {
+  createDocument,
+  getAllDocuments,
+  updateDocument,
+  deleteDocument,
+  searchDocuments, 
+};

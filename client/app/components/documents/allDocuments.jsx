@@ -1,12 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import { Link } from 'react-router';
 import DocumentDetail from './documentDetail';
 import CreateDocument from './createDocument';
+import toastr from 'toastr';
 import {deleteDocument} from '../../actions/documentAction';
 
 
-export default class AllDocuments extends React.Component {
+class AllDocuments extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +40,7 @@ export default class AllDocuments extends React.Component {
     const { documents } = this.props;
     const mappedDocs = documents.map((document, index) =>
 
-      <div>
+      <div key={document.id}>
       <div className="main col s2 m2 l2">
         <a onClick={(e)=>{this.deleteDoc(this, index)}} className="waves-effect waves-light btn"><i className="material-icons">delete</i> Delete</a>
         <a onClick={(e)=>{this.editDocument(this, index)}} href="#modal1"  className="waves-effect waves-light btn"><i className="material-icons"></i> Edit</a>
@@ -80,3 +82,14 @@ export default class AllDocuments extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    docDeletedSuccess: state.documentReducer.docDeletedSuccess
+  }
+}
+
+const  mapDispatchToProps = {
+    deleteDocument
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(AllDocuments)

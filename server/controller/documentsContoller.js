@@ -141,7 +141,7 @@ class documentController{
   static deleteDocument(req, res){
     db.Document.findOne({ where: { id: req.params.id } })
       .then((document) => {
-        if (!document.rows.length) {
+        if (!document) {
           return res.status(404).json({ msg: `Document ${req.params.id} not found` });
         }
         db.Document.destroy({ where: { id: req.params.id } })
@@ -182,7 +182,7 @@ class documentController{
       }
       db.Document.findAndCountAll(query)
       .then((document) =>{
-        if (!document.rows.length) {
+        if (!document) {
           return res.status(404).json({ message: 'Not found '})
         }
         const offset = query.offset;
