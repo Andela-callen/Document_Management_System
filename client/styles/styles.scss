@@ -1,0 +1,45 @@
+$background-color: #f1f1f1;
+$height: 40px;
+$link-color: #039be5;
+$pixels-10: 10px;
+body {
+  background: $background-color;
+}
+
+.main {
+  max-width: 500px;
+  margin: 50px auto 0
+}
+
+.btn {
+  height: $height;
+  line-height: $height;
+  position: relative;
+  padding: 0 $pixels-10 0 35px;
+  text-align: center;
+  i {
+    position: absolute;
+    left: $pixels-10;
+    top: 0;
+    line-height: $height;
+  }
+}
+
+.blue-color {
+  color: $link-color
+}
+
+.btn-floating {
+  position: absolute;
+  bottom: 85px;
+  right: $pixels-10 * 2;
+}
+
+.card-title {
+  position: reltive;
+  i {
+    position: absolute;
+    right: $pixels-10;
+    top: $pixels-10;
+  }
+}

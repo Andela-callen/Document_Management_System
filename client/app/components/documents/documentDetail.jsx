@@ -5,16 +5,7 @@ import jwt from 'jsonwebtoken';
 import { getAllDocuments } from '../../actions/documentAction';
 import { updateDocument } from '../../actions/documentAction';
 import toastr from 'toastr';
-
-// Require Editor JS files.
-require("froala-editor/js/froala_editor.pkgd.min.js");
-
-// // Require Editor CSS files.
-require("froala-editor/css/froala_style.min.css");
-require("froala-editor/css/froala_editor.pkgd.min.css");
-
-// // Require Font Awesome.
-// require('font-awesome/css/font-awesome.css');
+import AllDocuments from './allDocuments';
 
 var FroalaEditor = require('react-froala-wysiwyg');
 
@@ -22,13 +13,13 @@ var FroalaEditor = require('react-froala-wysiwyg');
 class DocumentDetail extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+  this.state = {
       model: '',
-      title: Object.assign({}, props.documents).title,
-      access: Object.assign({}, props.documents).access,
-      content: Object.assign({}, props.documents).content,
+      title: Object.assign({}, props.documents[props.currentdoc]).title,
+      access: Object.assign({}, props.documents[props.currentdoc]).access,
+      content: Object.assign({}, props.documents[props.currentdoc]).content,
       userId: jwt.decode(localStorage.getItem('token')).userId,
-      docId: this.props.routeParams.id,
+      docId: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
@@ -37,7 +28,7 @@ class DocumentDetail extends React.Component {
   }
 
 handleModelChange(model){
-  this.setState({ model });
+  this.setState({ content: model });
 }
 
 handleChange(event) {
@@ -49,25 +40,25 @@ onChange(event) {
   }
 
 componentDidMount() {
-  // $('select').material_select();
   $('#selectMe-edit').on('change', this.handleChange);
+  
 }
 
 componentWillReceiveProps(nextProps) {
-  if(this.props.documents.id !== nextProps.documents.id) {
-    this.setState({
-      title: Object.assign({}, nextProps.documents).title,
-      access: Object.assign({}, nextProps.documents).access,
-      content: Object.assign({}, nextProps.documents).content,
-      docId: nextProps.routeParams
+  if(this.props.currentdoc !== nextProps.currentdoc) {this.setState({
+      title: Object.assign({}, nextProps.documents[nextProps.currentdoc]).title,
+      access: Object.assign({}, nextProps.documents[nextProps.currentdoc]).access,
+      content: Object.assign({}, nextProps.documents[nextProps.currentdoc]).content,
     })
   }
 }
 
 onClick(event) {
     event.preventDefault();
+    let docId = this.props.documents[this.props.currentdoc].id
+    console.log(docId)
     this.props
-      .updateDocument(this.state)
+      .updateDocument(this.state.title, this.state.content, this.state.access, docId)
       .then(() => {
         toastr.success('Document successfully updated');
       }).catch(() => {
@@ -77,29 +68,49 @@ onClick(event) {
   }
   
   render() {
-    const { documents } = this.props;
-    const { id } = this.props.routeParams;
-    const targetDocument = documents.filter(document => document.id === Number(id))
-
     return (
-      <div className="card col s12 m6">
-        <ul className="card">
-          {/*<div>{targetDocument[0].id}</div>*/}
-          {/*<div>{targetDocument[0].title}</div>*/}
-          <FroalaEditor
-  tag='textarea'
-  config={this.config}
-  model={this.state.model}
-  onModelChange={this.handleModelChange}
-/>
-<div className="modal-footer">
-              <a
-                className="waves-effect waves-light btn modal-action modal-close"
-                id="edit-doc"
-                onClick={this.onClick}>UPDATE</a>
+      <div>
+        <div id="modal1" className="modal modal-fixed-footer">
+          <div className="modal-content">
+            <div className="">
+              <h4 className="center">Edit Document</h4>
+              <div className="">
+                <div className="input-field col s12">
+                  <input
+                    id="text-edit"
+                    type="text"
+                    value={this.state.title}
+                    name="title"
+                    className="validate"
+                    onChange={this.onChange} />
+                </div>
+              </div>
+              <div className=" col s12">
+                <ul className="card">
+                  <FroalaEditor
+                    tag='textarea'
+                    config={this.config}
+                    model={this.state.content}
+                    onModelChange={this.handleModelChange}
+                  />
+                </ul>
+
+                <select onChange={this.handleChange} className="browser-default" name="access" value={this.state.access}>
+                  <option value="">Choose your option</option>
+                  <option value="private">Private</option>
+                  <option value="public">Pubilc</option>
+                  <option value="role">role</option>
+                </select>
+              </div>
             </div>
-          {/*<div>{targetDocument[0].content}</div>*/}
-        </ul>
+
+          </div>
+          <div className="modal-footer">
+            <a href="#!" className="modal-action waves-effect waves-green btn-flat "
+              id="edit-doc"
+              onClick={this.onClick}>Update</a>
+          </div>
+        </div>
       </div>
     );
   }

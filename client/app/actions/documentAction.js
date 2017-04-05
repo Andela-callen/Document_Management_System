@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 export const CREATE_DOC_SUCCESSFUL = 'CREATE_DOC_SUCCESSFUL';
 export const UPLOAD_DOCS_SUCCESS = 'UPLOAD_DOCS_SUCCESS';
-export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJECTED'
+export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJEsCTED'
 export const UPDATE_DOC_SUCCESS = 'UPDATE_DOC_SUCCESS'
 // export const GET_DOCS = 'GET_DOCS';
 
@@ -17,7 +17,7 @@ const uploadDocsSuccess = (document) => {
 
 const uploadDocsRejected = (document) => {
   return {
-    type: UPLOAD_DOCS_REJECTED, payload: err };
+    type: UPLOAD_DOCS_REJECTED, payload: document };
 }
 
 const updateDocumentSuccess = (updated) => {
@@ -61,32 +61,28 @@ const getAllDocuments = () => {
         dispatch(uploadDocsSuccess(response.data));
       }
     }).catch((err) => {
+      // console.log(err)
       dispatch(uploadDocsRejected(err.data));
     })
   }
 };
 
-const updateDocument = (updateDocument) => {
+const updateDocument = (title, content, access, docId) => {
   const config ={
     headers: {
       Authorization:window.localStorage.getItem('token')
     }
   };
   return (dispatch) =>{
-     console.log(updateDocument.docId)
-     return axios.put(`/api/documents/${updateDocument.docId}`, 
-     [updateDocument.title, updateDocument.content, updateDocument.access], config)
-     console.log("you are tring to update")
+     return axios.put(`/api/documents/${docId}`, 
+     {title, content, access}, config)
      .then((response) => {
        if (response.status === 200) {
        dispatch(getAllDocuments());
-       console.log('I am getting all documents', response.status)
        }
   }).catch((err) => {
-    console.log('You hit error')
     throw (err);
   });
-  console.log("Nothing")
 }
 
 }

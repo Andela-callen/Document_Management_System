@@ -64,11 +64,6 @@ class CreateDocument extends React.Component {
             <div className="input-field col s6">
               <Input s={6} type="text" value={this.state.title} name="title" label="Title" validate></Input>
             </div>
-            <div className="input-field col m12">
-              <Input s={6} type="textarea" className="materialize-textarea" value={this.state.content} name="content" label="Content" validate></Input>
-          </div>
-          </div>
-        </div>
         <div >
         <select onChange={this.handleChange} className="browser-default" name="access" label="XXXXx" value={this.state.access}>
             <option value="">Choose your option</option>
@@ -77,6 +72,17 @@ class CreateDocument extends React.Component {
             <option value="role">role</option>
           </select>
           </div>
+            <div className="input-field col m12">
+              <FroalaEditor
+                    tag='textarea'
+                    config={this.config}
+                    model={this.state.content}
+                    onModelChange={this.handleModelChange}
+                  />
+              {/*<Input s={6} type="textarea" className="materialize-textarea" value={this.state.content} name="content" label="Content" validate></Input>*/}
+          </div>
+          </div>
+        </div>
         <div>
           <button className="waves-effect btn" onClick={this.handleSubmit} type="button" value="submit" />
         </div>

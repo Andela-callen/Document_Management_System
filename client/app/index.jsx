@@ -10,16 +10,15 @@ import Dashboard from './components/dashboard/dashboard';
 import CreateDocument from './components/documents/createDocument';
 import initialState from './store/initialState'
 import { Provider } from 'react-redux';
-// import { createStore, applyMiddleware, compose } from 'redux';
 import configureStore from './store/configureStore.js';
-// import './styles/style.scss'; // Webpack can import CSS files too!
-// import '../../node_modules/materialize-css/dist/js/materialize.min';
-// import '../../node_modules/materialize-css/dist/css/materialize.min.css';
-// import '../../node_modules/material-icons/css/material-icons.css';
-// import '../../node_modules/toastr/build/toastr.min.css';
-// import '../../node_modules/sweetalert/dist/sweetalert.css';
 import loggedIn from './actions/authAction';
 import DocumentDetail from './components/documents/documentDetail';
+import '../styles/styles.scss';
+require('font-awesome/css/font-awesome.css');// Require Editor JS files.
+require("froala-editor/js/froala_editor.pkgd.min.js");
+// // Require Editor CSS files.
+require("froala-editor/css/froala_style.min.css");
+require("froala-editor/css/froala_editor.pkgd.min.css");
 
 let store = configureStore();
 const onEnter = (next, replace, cb) => {

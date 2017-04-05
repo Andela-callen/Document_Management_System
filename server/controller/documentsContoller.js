@@ -120,9 +120,10 @@ class documentController{
   * @returns {Object} - Returns response object
 */
   static updateDocument(req, res){
+     console.log("kkk",req.body)
     db.Document.findOne({ where: { id: req.params.id } })
+     
     .then((document) => {
-      console.log(document)
       if (!document) {
         return res.status(404).json({msg:'Document not found'})
       } else {

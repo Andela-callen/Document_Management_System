@@ -19,9 +19,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
     <script src="/bundle.js"></script>
     <script>
-      $(function(){
-        $(".dropdown-button").dropdown();
-      })
+      // $(function(){
+      //   $(".dropdown-button").dropdown();
+      //   $('#modal2').modal('open');
+      // })
+    </script>
+    <script>
+      $(document).ready( () => {
+      $('.modal').modal();
+           $(".dropdown-button").dropdown();
+
+    $('select').material_select();
+        // $('#modal2').modal('open');
+    });
     </script>
   </body>
 </html>

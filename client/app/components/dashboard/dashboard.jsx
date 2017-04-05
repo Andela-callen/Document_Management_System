@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory, Link } from 'react-router';
 import AllDocuments from '../documents/allDocuments';
-import { getAllDocuments } from '../../actions/documentAction.js'
+import { getAllDocuments } from '../../actions/documentAction';
+import DocumentDetail from '../documents/documentDetail'
 
 class Dashboard extends React.Component {
 
@@ -14,9 +15,12 @@ class Dashboard extends React.Component {
 
   render() {
     return (
+    <div className="row">
       <div className="app">
+        
           <AllDocuments documents={this.props.documents} />
         </div>
+      </div>
     );
   }
 }
