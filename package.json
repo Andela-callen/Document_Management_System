@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_ENV=test babel-node ./node_modules/babel-istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec server/test/**",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls",
-    "start": "webpack && gulp"
+    "start": "gulp"
   },
   "author": "Allen Chinazor <chinazor.allen@andela.com>",
   "license": "ISC",
