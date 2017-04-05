@@ -62,7 +62,6 @@ onClick(event) {
       .then(() => {
         toastr.success('Document successfully updated');
       }).catch(() => {
-        console.log("i am here on click",this.state)
         toastr.error('An error occured updating the document');
       });
   }

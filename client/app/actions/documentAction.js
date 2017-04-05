@@ -4,25 +4,35 @@ import jwt from 'jsonwebtoken';
 export const CREATE_DOC_SUCCESSFUL = 'CREATE_DOC_SUCCESSFUL';
 export const UPLOAD_DOCS_SUCCESS = 'UPLOAD_DOCS_SUCCESS';
 export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJEsCTED'
-export const UPDATE_DOC_SUCCESS = 'UPDATE_DOC_SUCCESS'
+export const UPDATE_DOC_SUCCESS = 'UPDATE_DOC_SUCCESS';
+export const DELETE_DOCUMENT_SUCCESS = 'DELETE_DOCUMENT_SUCCESS';
+export const DELETE_DOCUMENT_REJECTED = 'DELETE_DOCUMENT_REJECTED';
+
 // export const GET_DOCS = 'GET_DOCS';
 
-const createDocSuccess = (document) => {
+export const createDocSuccess = (document) => {
   return { type: CREATE_DOC_SUCCESSFUL, document }
 }
-const uploadDocsSuccess = (document) => {
+export const uploadDocsSuccess = (document) => {
   return {
     type: UPLOAD_DOCS_SUCCESS, payload: document };
 }
 
-const uploadDocsRejected = (document) => {
+export const uploadDocsRejected = (document) => {
   return {
     type: UPLOAD_DOCS_REJECTED, payload: document };
 }
 
-const updateDocumentSuccess = (updated) => {
+export const updateDocumentSuccess = (updated) => {
   return {
     type: UPDATE_DOC_SUCCESS, payload: err};
+}
+
+export const docDeletedSuccess = (deleteDoc) => {
+  return { type: DELETE_DOCUMENT_SUCCESS, deleteDoc };
+}
+export const docDeletedRejected = (err) => {
+  return { type: DELETE_DOCUMENT_REJECTED, payload: err };
 }
 
 const createDocument = (title, content, access, userId) => {
@@ -61,7 +71,6 @@ const getAllDocuments = () => {
         dispatch(uploadDocsSuccess(response.data));
       }
     }).catch((err) => {
-      // console.log(err)
       dispatch(uploadDocsRejected(err.data));
     })
   }
@@ -85,6 +94,18 @@ const updateDocument = (title, content, access, docId) => {
   });
 }
 
-}
+};
 
-export { createDocument, createDocSuccess, getAllDocuments, updateDocument };
+ const deleteDocument = (docId) => {
+  return (dispatch) => {
+    axios.delete(`/api/documents/${DocId}`, {
+      headers: {
+        authorization: window.localStorage.getItem('token'),
+      }
+    }).catch((err) => {
+      dispatch(docDeletedRejected(err.data));
+    });
+  };
+ }
+
+export { createDocument, getAllDocuments, updateDocument, deleteDocument };

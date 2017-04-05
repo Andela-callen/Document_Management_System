@@ -22,7 +22,7 @@ class CreateDocument extends React.Component {
   }
 
   componentDidMount() {
-    $('select').material_select();
+    // $('select').material_select();
     $('#selectMe').on('change', this.handleChange);
     $('.modal').modal();
   }

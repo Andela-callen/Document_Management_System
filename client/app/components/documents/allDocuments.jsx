@@ -1,8 +1,9 @@
 import React from 'react';
 import jwt from 'jsonwebtoken';
 import { Link } from 'react-router';
-import DocumentDetail from './documentDetail'
-import CreateDocument from './createDocument'
+import DocumentDetail from './documentDetail';
+import CreateDocument from './createDocument';
+import {deleteDocument} from '../../actions/documentAction';
 
 
 export default class AllDocuments extends React.Component {
@@ -12,26 +13,34 @@ export default class AllDocuments extends React.Component {
       currentdoc: '0'
     }
     this.editDocument = this.editDocument.bind(this);
-    this.onClickCreate = this.onClickCreate.bind(this);
+    this.deleteDoc = this.deleteDoc.bind(this);
   }
 
   editDocument(e, documentIndex){
     this.setState({ currentdoc : documentIndex });
   }
 
-  onClickCreate(e){
-    e.preventDefault();
-    $('#modal2').modal('open');
-  }
+  deleteDoc(event){
+  // let docId = this.setState({ currentdoc : documentIndex });
+  // let docId = this.props.documents[this.props.currentdoc].id
+  // this.props.deleteDocument(this.props.documents[0].id)
+  // event.preventDefault();
+    this.props.deleteDocument(this.props.documents[0].id).then(() => {
+  console.log("I am Here");
+        toastr.success('Document successfully deleted');
+      }).catch(() => {
+        toastr.error('Unable to delete');
+      });
+}
+
 
   render() {
     const { documents } = this.props;
-
     const mappedDocs = documents.map((document, index) =>
 
       <div>
       <div className="main col s2 m2 l2">
-        <a className="waves-effect waves-light btn"><i className="material-icons">delete</i> Delete</a>
+        <a onClick={(e)=>{this.deleteDoc(this, index)}} className="waves-effect waves-light btn"><i className="material-icons">delete</i> Delete</a>
         <a onClick={(e)=>{this.editDocument(this, index)}} href="#modal1"  className="waves-effect waves-light btn"><i className="material-icons"></i> Edit</a>
         <div className="card">
           <div className="card-image waves-effect waves-block waves-light">
