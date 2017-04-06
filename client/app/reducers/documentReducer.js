@@ -23,7 +23,6 @@ export default function documentReducer(state = initialState, action) {
     case CREATE_DOC_SUCCESSFUL:
       return Object.assign({}, state, { document: action.document, docCreatedSuccess: true },);
     case UPLOAD_DOCS_SUCCESS:
-      debugger;
       return Object.assign({}, state, { documents: action.payload.msg });
     case UPLOAD_DOCS_REJECTED:
       return Object.assign({}, state, { error: action.payload},);
@@ -39,7 +38,6 @@ export default function documentReducer(state = initialState, action) {
         },
       );
     case SEARCH_DOCUMENT_SUCCESS:
-      debugger;
       return Object.assign(
         {},
         state,

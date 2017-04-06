@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 export const CREATE_DOC_SUCCESSFUL = 'CREATE_DOC_SUCCESSFUL';
 export const UPLOAD_DOCS_SUCCESS = 'UPLOAD_DOCS_SUCCESS';
-export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJEsCTED'
+export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJECTED'
 export const UPDATE_DOC_SUCCESS = 'UPDATE_DOC_SUCCESS';
 export const DELETE_DOCUMENT_SUCCESS = 'DELETE_DOCUMENT_SUCCESS';
 export const DELETE_DOCUMENT_REJECTED = 'DELETE_DOCUMENT_REJECTED';
@@ -27,7 +27,7 @@ export const uploadDocsRejected = (document) => {
 
 export const updateDocumentSuccess = (updated) => {
   return {
-    type: UPDATE_DOC_SUCCESS, payload: err};
+    type: UPDATE_DOC_SUCCESS, payload: updated};
 }
 
 export const docDeletedSuccess = (docId) => {
@@ -92,7 +92,6 @@ const searchDocuments = (query) => {
       Authorization: window.localStorage.getItem('token'),
     }
   };
-  console.log('Here');
   return (dispatch) => {
     return axios.get(`/api/search/documents/?text=${query}`, config)
     .then((response) => {
@@ -140,7 +139,6 @@ const updateDocument = (title, content, access, docId) => {
         }
       })
       .catch((err) => {
-        console.log(err);
         dispatch(docDeletedRejected(err.data));
       });
     };

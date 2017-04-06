@@ -27,42 +27,40 @@ class DocumentDetail extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-handleModelChange(model){
-  this.setState({ content: model });
-}
+  handleModelChange(model){
+    this.setState({ content: model });
+  }
 
-handleChange(event) {
+  handleChange(event) {
     this.setState({ access: event.target.value });
   }
 
-onChange(event) {
+  onChange(event) {
     this.setState({ title: event.target.value });
   }
 
-componentDidMount() {
-  $('#selectMe-edit').on('change', this.handleChange);
-  
-}
-
-componentWillReceiveProps(nextProps) {
-  if(this.props.currentdoc !== nextProps.currentdoc) {this.setState({
-      title: Object.assign({}, nextProps.documents[nextProps.currentdoc]).title,
-      access: Object.assign({}, nextProps.documents[nextProps.currentdoc]).access,
-      content: Object.assign({}, nextProps.documents[nextProps.currentdoc]).content,
-    })
+  componentDidMount() {
+    $('#selectMe-edit').on('change', this.handleChange); 
   }
-}
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.currentdoc !== nextProps.currentdoc) {this.setState({
+        title: Object.assign({}, nextProps.documents[nextProps.currentdoc]).title,
+        access: Object.assign({}, nextProps.documents[nextProps.currentdoc]).access,
+        content: Object.assign({}, nextProps.documents[nextProps.currentdoc]).content,
+      })
+    }
+  }
 
 onClick(event) {
     event.preventDefault();
     let docId = this.props.documents[this.props.currentdoc].id
-    console.log(docId)
     this.props
       .updateDocument(this.state.title, this.state.content, this.state.access, docId)
       .then(() => {
         toastr.success('Document successfully updated');
       }).catch(() => {
-        toastr.error('An error occured updating the document');
+        toastr.error('You are not authorized to edit this file');
       });
   }
   
@@ -73,7 +71,7 @@ onClick(event) {
           <div className="modal-content">
             <div className="">
               <h4 className="center">Edit Document</h4>
-              <div className="">
+              <form className="">
                 <div className="input-field col s12">
                   <input
                     id="text-edit"
@@ -83,7 +81,7 @@ onClick(event) {
                     className="validate"
                     onChange={this.onChange} />
                 </div>
-              </div>
+              </form>
               <div className=" col s12">
                 <ul className="card">
                   <FroalaEditor
@@ -105,7 +103,7 @@ onClick(event) {
 
           </div>
           <div className="modal-footer">
-            <a href="#!" className="modal-action waves-effect waves-green btn-flat "
+            <a className="modal-action waves-effect waves-green btn-flat "
               id="edit-doc"
               onClick={this.onClick}>Update</a>
           </div>

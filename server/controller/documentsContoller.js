@@ -144,10 +144,15 @@ class documentController{
         if (!document) {
           return res.status(404).json({ msg: `Document ${req.params.id} not found` });
         }
+        if(document.userId === req.decoded.userId){
         db.Document.destroy({ where: { id: req.params.id } })
           .then((document) => {
             return res.status(201).json({ msg: 'Document deleted' });
           });
+      }
+      else{
+         return res.status(403).json({ msg: `Cannot Delete Document` });
+      }
       });
   }
 

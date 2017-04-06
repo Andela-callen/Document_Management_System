@@ -5,33 +5,28 @@
      <meta charset="utf-8">
     <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
-    
-    <script>
-		window.ALLOYEDITOR_BASEPATH = 'alloyeditor/';
-		window.CKEDITOR_BASEPATH = 'alloyeditor/';
-	 </script>
 
   <title>Document Management System</title>
   </head>
   <body>
     <div id="app"></div>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script>
+      $(function(){
+        $(".dropdown-button").dropdown();
+      })
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
     <script src="/bundle.js"></script>
-    <script>
-      // $(function(){
-      //   $(".dropdown-button").dropdown();
-      //   $('#modal2').modal('open');
-      // })
-    </script>
-    <script>
+    <!--<script>
       $(document).ready( () => {
       $('.modal').modal();
-           $(".dropdown-button").dropdown();
+
+
 
     $('select').material_select();
         // $('#modal2').modal('open');
-    });
+    });-->
     </script>
   </body>
 </html>

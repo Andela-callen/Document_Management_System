@@ -23,12 +23,7 @@ class AllDocuments extends React.Component {
   }
 
   deleteDoc(event){
-  // let docId = this.setState({ currentdoc : documentIndex });
-  // let docId = this.props.documents[this.props.currentdoc].id
-  // this.props.deleteDocument(this.props.documents[0].id)
-  // event.preventDefault();
-    this.props.deleteDocument(this.props.documents[0].id).then(() => {
-  console.log("I am Here");
+    this.props.deleteDocument(this.props.documents[0].id).then((data) => {
         toastr.success('Document successfully deleted');
       }).catch(() => {
         toastr.error('Unable to delete');
@@ -49,9 +44,6 @@ class AllDocuments extends React.Component {
             <img className="activator" src="https://placekitten.com/400/200" />
             </div>
             <div className="">
-              <a href="#modal2"className="btn-floating btn-large waves-effect waves-light red ">
-                <i  className="material-icons">add</i>
-              </a>
               <span className="card-title  grey-text text-darken-4">{document.title} </span>
               <p><a href="#" className="activator">Read more....</a></p>
             </div>
@@ -63,12 +55,6 @@ class AllDocuments extends React.Component {
             </div>
           </div>
         </div>
-
-      {/*<li className="card-panel" key={document.id}>
-        <Link to={`/documents/${document.id}`}>
-          {document.title}
-        </Link>
-      </li>*/}
       </div>
     );
 

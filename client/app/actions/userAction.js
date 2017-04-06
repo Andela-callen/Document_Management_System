@@ -4,11 +4,24 @@ import axios from 'axios';
 export const LOGIN_SUCCESSFUL = 'LOGIN_SUCCESSFUL';
 export const SIGNUP_SUCCESSFUL = 'SIGNUP_SUCCESSFUL';
 
-const loginSuccess = (user) => {
+export const GET_USER_SUCCESSFUL = 'GET_ROLE_SUCCESSFUL';
+export const GET_USER_REJECTED = 'GET_ROLE_SUCCESSFUL';
+
+export const loginSuccess = (user) => {
   return { type: LOGIN_SUCCESSFUL, user };
 }
-const signupSuccess = (user) => {
+export const signupSuccess = (user) => {
   return { type: SIGNUP_SUCCESSFUL, user };
+}
+export const getUserSuccessful = (users) => {
+  return {
+    type: GET_USER_SUCCESSFUL, payload: users
+  }
+}
+export const getUserRejected = (users) =>{
+  return {
+    type: GET_USER_REJECTED, payload: users
+  }
 }
 const loginEvent = (username, password) => {
   return (dispatch) => {
@@ -51,11 +64,22 @@ const signupEvent = (firstname, lastname, username, email, password, password_co
   };
 };
 
+const getUsers = () => {
+  const config = {
+    headers: {
+      Authorization: window.localStorage.getItem('token'),
+    }
+  };
+  return (dispatch) => {
+    return axios.get('/api/users/', config)
+    .then((response) => {
+        dispatch(getUserSuccessful(response.data.users));
+    })
+    .catch((err) => {
+      dispatch(getRoleRejected(err.data));
+    })
+  }
+} 
 
-export { signupEvent };
 
-export { loginEvent };
-
-export { signupSuccess };
-
-export default loginSuccess;
+export { signupEvent, loginEvent, getUsers };

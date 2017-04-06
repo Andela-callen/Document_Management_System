@@ -28,8 +28,8 @@ const routes = (router, authenticate) => {
   router.get('/users/:id/documents', authenticate.checkToken, documentController.getDocumentForUser);
   router.get('/search/documents/', authenticate.checkToken, documentController.searchDocument);
 
-  router.post('/roles/', rolesController.createRole);
-  router.get('/roles/', rolesController.getAll);
+  router.post('/roles/', authenticate.checkToken, rolesController.createRole);
+  router.get('/roles/', authenticate.checkToken, rolesController.getAll);
 
   router
     .route('/roles/:id')

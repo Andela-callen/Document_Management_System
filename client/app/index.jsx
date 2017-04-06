@@ -13,6 +13,8 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configureStore.js';
 import loggedIn from './actions/authAction';
 import DocumentDetail from './components/documents/documentDetail';
+import Roles from './components/management/roles';
+import Users  from './components/management/users';
 import '../styles/styles.scss';
 require('font-awesome/css/font-awesome.css');// Require Editor JS files.
 require("froala-editor/js/froala_editor.pkgd.min.js");
@@ -36,12 +38,14 @@ const onEnter = (next, replace, cb) => {
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={Main} >
-      <IndexRedirect to ="/login"/>
+        <IndexRedirect to ="/login"/>
         <Route path="/signup" component={Signup} onEnter={onEnter}  />
         <Route path="/login" component={Login} onEnter={onEnter} />
         <Route path="/dashboard" component={Dashboard} onEnter={onEnter} />
         <Route path="/createDocument" component={CreateDocument} onEnter={onEnter} />
         <Route path="/documents/:id" component={DocumentDetail} onEnter={onEnter} />
+        <Route path="/roles" component={Roles} onEnter={onEnter} />
+        <Route path="/users" component={Users} onEnter={onEnter} />
       </Route>
     </Router>
   </Provider>,
