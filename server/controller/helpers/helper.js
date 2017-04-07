@@ -27,7 +27,7 @@ const Helper = {
 
   transfromDocument(document) {
     const docDetails = {
-     userId: document.userId,
+     id: document.id,
      title: document.title,
      content: document.content,
      access: document.access,

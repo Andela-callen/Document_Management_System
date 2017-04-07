@@ -17,7 +17,6 @@ class Main extends React.Component {
   }
 
   render() {
-    console.log('roles: ', this.props.roles);
     return (
       <div>
         <NavBar roles={this.props.roles} user={this.props.user} />
