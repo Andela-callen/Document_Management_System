@@ -26,10 +26,11 @@ describe('Roles', () => {
          adminRole = newRole[0];
          user.roleId = adminRole.id;
          request
-          .post('/users/')
+          .post('/api/users/')
           .send(user)
           .end((err, res) => {
             token = res.body.token;
+            console.log(token)
             done();
           });
        });
@@ -48,7 +49,7 @@ describe('Create Role POST /roles/', () => {
   it('should create a new role if not existing',
     (done) => {
       request
-        .post('/roles')
+        .post('/api/roles')
         .send({ title: 'newRole' })
         .set('authorization', token)
         .end((err, res) => {
@@ -62,7 +63,7 @@ describe('Create Role POST /roles/', () => {
     it('should return an error if role already exists',
       (done) => {
         request
-         .post('/roles/')
+         .post('/api/roles/')
          .send({ title: 'Admin' })
          .set('authorization', token)
          .end((err, res) => {
@@ -74,7 +75,7 @@ describe('Create Role POST /roles/', () => {
 
       it('should return an error if no title is passed', (done) => {
       request
-        .post('/roles/')
+        .post('/api/roles/')
         .send({})
         .set('authorization', token)
         .end((err, res) => {
@@ -88,7 +89,7 @@ describe('Create Role POST /roles/', () => {
   describe('GET all roles: /roles/', () => {
     it('should return all roles', (done) => {
       request
-      .get('/roles?limit=2&offset=1')
+      .get('/api/roles?limit=2&offset=1')
       .set('authorization', token)
       .end((err, res) => {
         expect(res.status).to.equal(200)
@@ -102,7 +103,7 @@ describe('Create Role POST /roles/', () => {
   describe('Update a role PUT: /roles/:id', () => {
     it('should update role if it exists', (done) => {
       request
-        .put('/roles/2')
+        .put('/api/roles/2')
         .send({ title: 'changedRole' })
         .set('authorization', token)
         .end((err, res) => {
@@ -114,7 +115,7 @@ describe('Create Role POST /roles/', () => {
 
     it('should return error if role does not exist', (done) => {
       request
-        .get('/roles/8')
+        .put('/api/roles/12')
         .set('authorization', token)
         .end((err, res) => {
           if (err) return done(err);
@@ -125,7 +126,7 @@ describe('Create Role POST /roles/', () => {
 
     it('should return an error if role is an Admin role', (done) => {
       request
-        .put('/roles/1')
+        .put('/api/roles/1')
         .send({ title: 'changedRole' })
         .set('authorization', token)
         .end((err, res) => {
@@ -139,7 +140,7 @@ describe('Create Role POST /roles/', () => {
   describe('Delete a role DELETE: /roles/:id', () => {
     it('should delete role if it exists', (done) => {
       request
-        .delete('/roles/2')
+        .delete('/api/roles/2')
         .set('authorization', token)
         .end((err, res) => {
           if (err) return done(err);
@@ -150,7 +151,7 @@ describe('Create Role POST /roles/', () => {
 
     it('should return an error if role does not exists', (done) => {
       request
-        .delete('/roles/10')
+        .delete('/api/roles/10')
         .set('authorization', token)
         .end((err, res) => {
           if (err) return done(err);
@@ -161,7 +162,7 @@ describe('Create Role POST /roles/', () => {
 
     it('should return an error if it is an admin role', (done) => {
       request
-        .delete('/roles/1')
+        .delete('/api/roles/1')
         .set('authorization', token)
         .end((err, res) => {
           if (err) return done(err);

@@ -16,7 +16,6 @@ const initialState = {
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
   case LOGIN_SUCCESSFUL:
-    debugger;
     return Object.assign({}, state, { user: action.user, login_success: true });
   case SIGNUP_SUCCESSFUL:
     return Object.assign({}, state, { user: action.user, signup_success: true });

@@ -19,11 +19,12 @@ class AllDocuments extends React.Component {
   }
 
   editDocument(e, documentIndex){
-    this.setState({ currentdoc : documentIndex });
+    this.setState({ currentdoc: documentIndex });
   }
 
-  deleteDoc(event){
-    this.props.deleteDocument(this.props.documents[0].id).then((data) => {
+  deleteDoc(e, docId){
+    debugger;
+    this.props.deleteDocument(docId).then((data) => {
         toastr.success('Document successfully deleted');
       }).catch(() => {
         toastr.error('Unable to delete');
@@ -37,7 +38,7 @@ class AllDocuments extends React.Component {
 
       <div key={document.id}>
       <div className="main col s2 m2 l2">
-        <a onClick={(e)=>{this.deleteDoc(this, index)}} className="waves-effect waves-light btn"><i className="material-icons">delete</i> Delete</a>
+        <a onClick={(e)=>{this.deleteDoc(this, document.id)}} className="waves-effect waves-light btn"><i className="material-icons">delete</i> Delete</a>
         <a onClick={(e)=>{this.editDocument(this, index)}} href="#modal1"  className="waves-effect waves-light btn"><i className="material-icons"></i> Edit</a>
         <div className="card">
           <div className="card-image waves-effect waves-block waves-light">

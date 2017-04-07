@@ -13,7 +13,7 @@ export default function roleReducer(state = initialState, action) {
       return Object.assign({}, state, { roles: action.payload.result, pagination: action.payload.pagination });
     case GET_ROLE_REJECTED:
       return Object.assign({}, state, { error: action.payload});
-  default:
-  return state;
+    default:
+      return state;
   }
 }

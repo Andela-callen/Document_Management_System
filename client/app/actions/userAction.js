@@ -32,6 +32,7 @@ const loginEvent = (username, password) => {
       if (response.status === 200) {
         const data = response.data;
         localStorage.setItem('token', data.token);
+        localStorage.setItem('userRoleId', data.user.roleId);
         dispatch(loginSuccess(response.data));
       }
       //  else {
