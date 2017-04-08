@@ -1,6 +1,6 @@
 import React from 'react';
 import { browserHistory, Link } from 'react-router';
-import { Navbar, NavItem, Icon } from 'react-materialize';
+import { NavItem, Dropdown, Button } from 'react-materialize';
 import { connect } from 'react-redux';
 import {} from '../../actions/roleAction';
 import jwt from 'jsonwebtoken';
@@ -16,12 +16,6 @@ export default class NavBar extends React.Component {
     this.logOut = this.logOut.bind(this);
   }
 
-  componentDidMount() {
-    console.log("This is thing the ");
-    // console.log($(".dropdown-button")[0]);
-    
-  }
-
   logOut(){
     localStorage.clear('token');
     browserHistory.push('/')
@@ -30,27 +24,16 @@ export default class NavBar extends React.Component {
   renderNavBar() {
     const token = localStorage.getItem('token');
     let isAdmin = false;
-    console.log('user: ', this.props.user);
-    if (this.props.user) {
-      const adminRole = this.props.roles.filter(role => role.title === 'Admin')[0];
-      if (adminRole && this.props.user.roleId === adminRole.id) {
-        isAdmin = true;
-      }
+    if (this.props.user && this.props.user.roleId) {
+      isAdmin = true;
     }
     
 
     const menu = (
-      <li>
-        <ul id="dropdown1" className="dropdown-content">
-          <li><Link to="/profile">Profile</Link></li>
-          <li className="divider"></li>
-          <li><Link to="/createDocument">Create Document</Link></li>
-          { isAdmin ? <li><Link to="#">Create Role</Link></li> : null}
-        </ul>
-        <ul className="right hide-on-med-and-down">
-          <li><a className="dropdown-button" data-activates="dropdown1">Dropdown<i className="material-icons right">arrow_drop_down</i></a></li>
-        </ul>
-      </li>
+      <span>
+        { isAdmin ? <li><Link to="/roles">View Role</Link></li> : null }
+        { isAdmin ? <li><Link to="/users">View Users</Link></li> : null}
+      </span>
     );
 
     const unauthenticatedView = (
@@ -64,6 +47,7 @@ export default class NavBar extends React.Component {
       <span>
         <SearchForm />
         {menu}
+        <li><Link to="/createDocument">Create Document</Link></li>
         <li> <Link to="/dashboard"> Dashboard</Link></li>
         <li><a onClick={this.logOut}>Logout</a></li>
       </span>
@@ -79,7 +63,6 @@ export default class NavBar extends React.Component {
             </ul>
           </div>
         </nav>
-        {/*<script>$(".dropdown-button").dropdown();</script>*/}
       </div>
     );
   }

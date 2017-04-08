@@ -34,7 +34,6 @@ class AllDocuments extends React.Component {
   render() {
     const { documents } = this.props;
     const mappedDocs = documents.map((document, index) =>
-
       <div key={document.id}>
       <div className="main col s2 m2 l2">
         <a onClick={(e)=>{this.deleteDoc(this, index)}} className="waves-effect waves-light btn"><i className="material-icons">delete</i> Delete</a>
@@ -48,7 +47,7 @@ class AllDocuments extends React.Component {
               <p><a href="#" className="activator">Read more....</a></p>
             </div>
             <div className="card-reveal">
-              <span className="card-title blue-color">Card Title
+              <span className="card-title blue-color">{document.title}
               <i className="material-icons">clear</i>
               </span>
               <p>{document.content}</p>

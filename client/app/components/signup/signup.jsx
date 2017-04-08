@@ -24,7 +24,7 @@ class Signup extends React.Component {
 componentWillReceiveProps(nextProps) {
   console.log(nextProps);
   if (nextProps.signup_success){
-    browserHistory.push('/'); //should be docs or dashboard
+    browserHistory.push('/dashboard');
   }
 }
   handleChange(event) {

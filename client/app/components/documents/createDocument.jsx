@@ -11,6 +11,7 @@ class CreateDocument extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      model:'',
       title: '',
       content: '',
       access: '',
@@ -19,6 +20,7 @@ class CreateDocument extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleModelChange = this.handleModelChange.bind(this);
   }
 
   componentDidMount() {
@@ -37,6 +39,10 @@ class CreateDocument extends React.Component {
     const changeProps = {};
     changeProps[event.target.name] = event.target.value;
     this.setState(changeProps);
+  }
+
+  handleModelChange(model){
+    this.setState({ content: model });
   }
 
   handleSubmit(event) {
@@ -72,12 +78,12 @@ class CreateDocument extends React.Component {
           </select>
           </div>
             <div className="input-field col m12">
-              {/*<FroalaEditor
+              <FroalaEditor
                     tag='textarea'
                     config={this.config}
                     model={this.state.content}
                     onModelChange={this.handleModelChange}
-                  />*/}
+                  />
               {/*<Input s={6} type="textarea" className="materialize-textarea" value={this.state.content} name="content" label="Content" validate></Input>*/}
           </div>
           </div>

@@ -11,18 +11,36 @@ class Users extends React.Component {
   }
 
   render() {
-    console.log('Chineze: ', this.props.users)
     return (
-      <div>
-        { this.props.users.map(user => {
+
+      <table className="striped">
+        <thead>
+          <tr>
+              <th>Username</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          { this.props.users.map(user => {
           return (
-            <div key={user.id} className="card">
-              <h2>{user.username}</h2>
-              <div></div>
-            </div>
+            <tr key={user.id}>
+
+              <td>{user.username}</td>
+              <td>{user.firstname}</td>
+              <td>{user.lastname}</td>
+              <td>{user.email}</td>
+              <span><i className="material-icons">mode_edit</i></span>
+              <span><i className="material-icons">delete</i></span>
+            </tr>
           )
         })}
-      </div>
+        </tbody>
+      </table>
+            
+
     )
   }
 }

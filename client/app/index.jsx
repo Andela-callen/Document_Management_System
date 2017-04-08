@@ -37,10 +37,9 @@ const onEnter = (next, replace, cb) => {
  render (
   <Provider store={store}>
     <Router history={browserHistory}>
+      <Route path="/login" component={Login} onEnter={onEnter} />
+      <Route path="/signup" component={Signup} onEnter={onEnter}  />
       <Route path="/" component={Main} >
-        <IndexRedirect to ="/login"/>
-        <Route path="/signup" component={Signup} onEnter={onEnter}  />
-        <Route path="/login" component={Login} onEnter={onEnter} />
         <Route path="/dashboard" component={Dashboard} onEnter={onEnter} />
         <Route path="/createDocument" component={CreateDocument} onEnter={onEnter} />
         <Route path="/documents/:id" component={DocumentDetail} onEnter={onEnter} />

@@ -6,16 +6,16 @@ export const GET_ROLE_REJECTED = 'GET_ROLE_SUCCESSFUL';
 export const getRoleSuccessful = (roles) => {
   return {
     type: GET_ROLE_SUCCESSFUL, payload: roles
-  }
-}
+  };
+};
 
-export const getRoleRejected = (roles) =>{
+export const getRoleRejected = (roles) => {
   return {
     type: GET_ROLE_REJECTED, payload: roles
-  }
-}
+  };
+};
 
-const getRoles = () => {
+export const getRoles = () => {
   const config = {
     headers: {
       Authorization: window.localStorage.getItem('token'),
@@ -23,16 +23,14 @@ const getRoles = () => {
   };
   return (dispatch) => {
     return axios.get('/api/roles/', config).then((response) => {
-      dispatch(getRoleSuccessful(response.data));
+      dispatch(getRoleSuccessful(response.data.roles));
     })
     .catch((err) => {
       dispatch(getRoleRejected(err.data));
-    })
-  }
-} 
+    });
+  };
+};
 
-export {
-  getRoles
-}
+
 
 

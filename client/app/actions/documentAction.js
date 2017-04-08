@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 
 export const CREATE_DOC_SUCCESSFUL = 'CREATE_DOC_SUCCESSFUL';
 export const UPLOAD_DOCS_SUCCESS = 'UPLOAD_DOCS_SUCCESS';
-export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJECTED'
+export const GET_MORE_DOCS = 'GET_MORE_DOCS';
+export const UPLOAD_DOCS_REJECTED = 'UPLOAD_DOCS_REJECTED';
 export const UPDATE_DOC_SUCCESS = 'UPDATE_DOC_SUCCESS';
 export const DELETE_DOCUMENT_SUCCESS = 'DELETE_DOCUMENT_SUCCESS';
 export const DELETE_DOCUMENT_REJECTED = 'DELETE_DOCUMENT_REJECTED';
@@ -68,14 +69,14 @@ const createDocument = (title, content, access, userId) => {
 };
 
 
-const getAllDocuments = () => {
+const getAllDocuments = (offset = 0) => {
   const config = {
     headers: {
       Authorization: window.localStorage.getItem('token')
     }
   };
   return (dispatch) => {
-    return axios.get('/api/documents/', config)
+    return axios.get('/api/documents?offset=' + offset, config)
     .then((response) => {
       if (response.status === 200 ){
         dispatch(uploadDocsSuccess(response.data));

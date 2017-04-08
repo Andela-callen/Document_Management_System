@@ -84,12 +84,12 @@ onClick(event) {
               </form>
               <div className=" col s12">
                 <ul className="card">
-                  {/*<FroalaEditor
+                  <FroalaEditor
                     tag='textarea'
                     config={this.config}
                     model={this.state.content}
                     onModelChange={this.handleModelChange}
-                  />*/}
+                  />
                 </ul>
 
                 <select onChange={this.handleChange} className="browser-default" name="access" value={this.state.access}>

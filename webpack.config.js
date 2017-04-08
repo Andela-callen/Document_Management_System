@@ -1,5 +1,5 @@
 const path = require('path');
-let webpack = require('webpack');
+const webpack = require('webpack');
 
 const BUILD_DIR = path.resolve(__dirname, 'client/public/js/');
 const APP_DIR = path.resolve(__dirname, 'client/app/');
@@ -7,7 +7,7 @@ const APP_DIR = path.resolve(__dirname, 'client/app/');
 const config = {
   watch: true,
   devtool: 'eval',
-  entry:  `${APP_DIR}/index.jsx`,
+  entry: `${APP_DIR}/index.jsx`,
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js'
@@ -17,14 +17,13 @@ const config = {
   },
 
   plugins: [
-    // new webpack.HotModuleReplacementPlugin(),
-    // new webpack.NoErrorsPlugin(),
-    // new webpack.ProvidePlugin({
-    //   $: 'jquery',
-    //   jQuery: 'jquery',
-    //   'window.jQuery': 'jquery',
-    //   Hammer: 'hammerjs/hammer'
-    // }),
+  //   // new webpack.HotModuleReplacementPlugin(),
+  //   // new webpack.NoErrorsPlugin(),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
+    }),
   ],
 
   node: {
@@ -35,14 +34,14 @@ const config = {
   module: {
     rules: [
       {
-            test: /\.scss$/,
-            use: [{
-                loader: "style-loader" // creates style nodes from JS strings
-            }, {
-                loader: "css-loader" // translates CSS into CommonJS
-            }, {
-                loader: "sass-loader" // compiles Sass to CSS
-            }]
+        test: /\.scss$/,
+        use: [{
+          loader: 'style-loader' // creates style nodes from JS strings
+        }, {
+          loader: 'css-loader' // translates CSS into CommonJS
+        }, {
+          loader: 'sass-loader' // compiles Sass to CSS
+        }]
       },
       { test: /\.jsx?/, include: APP_DIR, loader: 'babel-loader' },
       { test: /(\.css)$/, loaders: ['style-loader', 'css-loader'] },
@@ -52,11 +51,14 @@ const config = {
         test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url-loader?limit=10000&mimetype=application/font-woff'
       },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url-loader?limit=10000&mimetype=image/svg+xml' },
-      { test: /\.(jpg|png|svg|jpeg)$/, loader: 'url-loader',
-      options: { limit: 25000 },}
-      ]
+      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
+      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader?limit=10000&mimetype=image/svg+xml' },
+      { test: /\.(jpg|png|svg|jpeg)$/,
+        loader: 'url-loader',
+        options: { limit: 25000 }
+      }]
   }
 };
 

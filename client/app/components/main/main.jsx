@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {} from '../../actions/roleAction';
 import jwt from 'jsonwebtoken';
 
+import { getOneUser } from '../../actions/userAction';
 import { searchDocuments } from '../../actions/documentAction';
 import { getRoles } from '../../actions/roleAction.js';
 
@@ -12,8 +13,22 @@ import NavBar from '../NavBar/NavBar';
 
 
 class Main extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  componentWillMount() {
+    
+  }
+
   componentDidMount () {
-    this.props.getRoles();
+    var token = localStorage.getItem( "token");
+    if (token){
+      console.log('called');
+      console.log(this.props);
+      this.props.getOneUser();
+    }else{
+      //redirect to login
+    }
   }
 
   render() {
@@ -37,7 +52,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = {
     searchDocuments,
-    getRoles
+    getRoles,
+    getOneUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

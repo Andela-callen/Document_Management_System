@@ -1,9 +1,9 @@
 // import initialState from '../store/initialState';
-import { 
-  LOGIN_SUCCESSFUL, 
-  SIGNUP_SUCCESSFUL, 
-  GET_USER_SUCCESSFUL, 
-  GET_USER_REJECTED 
+import {
+  LOGIN_SUCCESSFUL,
+  SIGNUP_SUCCESSFUL,
+  GET_USER_SUCCESSFUL,
+  GET_USER_REJECTED
 } from '../actions/userAction';
 
 const initialState = {
@@ -13,6 +13,10 @@ const initialState = {
   signup_success: false
 };
 
+/**
+ * @param {*} state
+ * @param {*} action
+ */
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
   case LOGIN_SUCCESSFUL:
@@ -22,7 +26,7 @@ export default function userReducer(state = initialState, action) {
   case GET_USER_SUCCESSFUL:
     return Object.assign({}, state, { users: action.payload });
   case GET_USER_REJECTED:
-    return Object.assign({}, state, { error: action.payload},);
+    return Object.assign({}, state, { error: action.payload });
   default:
     return state;
   }
