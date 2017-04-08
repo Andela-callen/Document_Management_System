@@ -12,6 +12,13 @@ class Dashboard extends React.Component {
     this.props.getAllDocuments();
   }
 
+  componentWillMount() {
+  }
+
+  componentDidMount() {
+    $(".dropdown-button").dropdown();
+  }
+
 
   render() {
     return (
@@ -37,4 +44,6 @@ const mapDispatchToProps = {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+
+
 

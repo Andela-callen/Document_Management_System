@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import FroalaEditor from 'react-froala-wysiwyg';
 import jwt from 'jsonwebtoken';
 import { getAllDocuments } from '../../actions/documentAction';
 import { updateDocument } from '../../actions/documentAction';
 import toastr from 'toastr';
 import AllDocuments from './allDocuments';
 
-var FroalaEditor = require('react-froala-wysiwyg');
 
 
 class DocumentDetail extends React.Component {
@@ -84,12 +84,12 @@ onClick(event) {
               </form>
               <div className=" col s12">
                 <ul className="card">
-                  <FroalaEditor
+                  {/*<FroalaEditor
                     tag='textarea'
                     config={this.config}
                     model={this.state.content}
                     onModelChange={this.handleModelChange}
-                  />
+                  />*/}
                 </ul>
 
                 <select onChange={this.handleChange} className="browser-default" name="access" value={this.state.access}>

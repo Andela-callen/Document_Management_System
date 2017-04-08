@@ -16,6 +16,12 @@ export default class NavBar extends React.Component {
     this.logOut = this.logOut.bind(this);
   }
 
+  componentDidMount() {
+    console.log("This is thing the ");
+    // console.log($(".dropdown-button")[0]);
+    
+  }
+
   logOut(){
     localStorage.clear('token');
     browserHistory.push('/')
@@ -26,7 +32,6 @@ export default class NavBar extends React.Component {
     let isAdmin = false;
     console.log('user: ', this.props.user);
     if (this.props.user) {
-      debugger;
       const adminRole = this.props.roles.filter(role => role.title === 'Admin')[0];
       if (adminRole && this.props.user.roleId === adminRole.id) {
         isAdmin = true;
@@ -74,6 +79,7 @@ export default class NavBar extends React.Component {
             </ul>
           </div>
         </nav>
+        {/*<script>$(".dropdown-button").dropdown();</script>*/}
       </div>
     );
   }

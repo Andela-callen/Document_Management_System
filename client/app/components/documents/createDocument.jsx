@@ -72,12 +72,12 @@ class CreateDocument extends React.Component {
           </select>
           </div>
             <div className="input-field col m12">
-              <FroalaEditor
+              {/*<FroalaEditor
                     tag='textarea'
                     config={this.config}
                     model={this.state.content}
                     onModelChange={this.handleModelChange}
-                  />
+                  />*/}
               {/*<Input s={6} type="textarea" className="materialize-textarea" value={this.state.content} name="content" label="Content" validate></Input>*/}
           </div>
           </div>

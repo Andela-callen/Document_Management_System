@@ -19,12 +19,12 @@ const config = {
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
     // new webpack.NoErrorsPlugin(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      Hammer: 'hammerjs/hammer'
-    }),
+    // new webpack.ProvidePlugin({
+    //   $: 'jquery',
+    //   jQuery: 'jquery',
+    //   'window.jQuery': 'jquery',
+    //   Hammer: 'hammerjs/hammer'
+    // }),
   ],
 
   node: {
