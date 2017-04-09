@@ -17,14 +17,12 @@ class Main extends React.Component {
     super(props);
   }
   componentWillMount() {
-    
+    this.props.getRoles()
   }
 
   componentDidMount () {
     var token = localStorage.getItem( "token");
     if (token){
-      console.log('called');
-      console.log(this.props);
       this.props.getOneUser();
     }else{
       //redirect to login

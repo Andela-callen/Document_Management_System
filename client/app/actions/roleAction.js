@@ -3,11 +3,11 @@ import axios from 'axios';
 export const GET_ROLE_SUCCESSFUL = 'GET_ROLE_SUCCESSFUL';
 export const GET_ROLE_REJECTED = 'GET_ROLE_SUCCESSFUL';
 
-export const getRoleSuccessful = (roles) => {
+export function getRoleSuccessful(roles) {
   return {
     type: GET_ROLE_SUCCESSFUL, payload: roles
   };
-};
+}
 
 export const getRoleRejected = (roles) => {
   return {
@@ -23,7 +23,7 @@ export const getRoles = () => {
   };
   return (dispatch) => {
     return axios.get('/api/roles/', config).then((response) => {
-      dispatch(getRoleSuccessful(response.data.roles));
+      dispatch(getRoleSuccessful(response.data));
     })
     .catch((err) => {
       dispatch(getRoleRejected(err.data));

@@ -6,12 +6,8 @@ import { Input, Button, Row, Col, Icon } from 'react-materialize'
 import { getRoles } from '../../actions/roleAction'
 
 class Roles extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.props.getRoles();
-  // }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getRoles();
   }
 
@@ -27,14 +23,15 @@ class Roles extends React.Component {
         </thead>
 
         <tbody>
-          {this.props.roles}
           { this.props.roles.map(role => {
           return (
             <tr key={role.id}>
 
               <td>{role.title}</td>
-              <span><i className="material-icons">mode_edit</i></span>
-              <span><i className="material-icons">delete</i></span>
+              <td>
+              <i className="material-icons">mode_edit</i>
+              <i className="material-icons">delete</i>
+              </td>
             </tr>
           )
         })}
@@ -45,7 +42,6 @@ class Roles extends React.Component {
 }
 
 const stateToProps = (state) => {
-  console.log('stateeeee',state)
   return {
     roles: state.roleReducer.roles,
   }

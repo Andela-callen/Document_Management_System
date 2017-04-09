@@ -15,7 +15,7 @@ const initialState = {
 export default function roleReducer(state = initialState, action) {
   switch (action.type) {
   case GET_ROLE_SUCCESSFUL:
-    return Object.assign({}, state, { roles: action.payload });
+    return Object.assign({}, state, { roles: action.payload.result });
   case GET_ROLE_REJECTED:
     return Object.assign({}, state, { error: action.payload });
   default:

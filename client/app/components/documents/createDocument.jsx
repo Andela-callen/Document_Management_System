@@ -24,16 +24,9 @@ class CreateDocument extends React.Component {
   }
 
   componentDidMount() {
-    // $('select').material_select();
     $('#selectMe').on('change', this.handleChange);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   console.log(nextProps);
-  //   if (nextProps.uploadDocsSuccess) {
-  //     browserHistory.push('/createDocument'); //should be docs or dashboard
-  //   }
-  // }
   handleChange(event) {
     console.log(event)
     const changeProps = {};
@@ -84,25 +77,12 @@ class CreateDocument extends React.Component {
                     model={this.state.content}
                     onModelChange={this.handleModelChange}
                   />
-              {/*<Input s={6} type="textarea" className="materialize-textarea" value={this.state.content} name="content" label="Content" validate></Input>*/}
-          </div>
+            </div>
           </div>
         </div>
         <div>
-          <button className="waves-effect btn" onClick={this.handleSubmit} type="button" value="submit" />
+          <input className="waves-effect waves-light btn" onClick={this.handleSubmit} type="button" value="submit" />
         </div>
-
-      {/*<a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>*/}
-
-  {/*<div id="modal1" className="modal modal-fixed-footer">
-    <div className="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
-    </div>
-    <div className="modal-footer">
-      <a href="#!" className="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
-    </div>
-  </div>*/}
       </div>
 
     );

@@ -32,8 +32,8 @@ class Users extends React.Component {
               <td>{user.firstname}</td>
               <td>{user.lastname}</td>
               <td>{user.email}</td>
-              <span><i className="material-icons">mode_edit</i></span>
-              <span><i className="material-icons">delete</i></span>
+              <td><i className="material-icons">mode_edit</i>
+              <i className="material-icons">delete</i></td>
             </tr>
           )
         })}

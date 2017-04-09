@@ -6,6 +6,7 @@ import DocumentDetail from './documentDetail';
 import CreateDocument from './createDocument';
 import toastr from 'toastr';
 import {deleteDocument} from '../../actions/documentAction';
+import logo from '../../img/logo1.png';
 
 
 class AllDocuments extends React.Component {
@@ -36,11 +37,11 @@ class AllDocuments extends React.Component {
     const mappedDocs = documents.map((document, index) =>
       <div key={document.id}>
       <div className="main col s2 m2 l2">
-        <a onClick={(e)=>{this.deleteDoc(this, index)}} className="waves-effect waves-light btn"><i className="material-icons">delete</i> Delete</a>
-        <a onClick={(e)=>{this.editDocument(this, index)}} href="#modal1"  className="waves-effect waves-light btn"><i className="material-icons"></i> Edit</a>
+        <a onClick={(e)=>{this.deleteDoc(this, index)}} className="waves-effect light-blue darken-3 btn"><i className="material-icons">delete</i> Delete</a>
+        <a onClick={(e)=>{this.editDocument(this, index)}} href="#modal1"  className="waves-effect light-blue darken-3 btn"><i className="material-icons"></i> Edit</a>
         <div className="card">
           <div className="card-image waves-effect waves-block waves-light">
-            <img className="activator" src="https://placekitten.com/400/200" />
+            <img className="activator" src={logo} />
             </div>
             <div className="">
               <span className="card-title  grey-text text-darken-4">{document.title} </span>

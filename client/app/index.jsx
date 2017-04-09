@@ -3,19 +3,21 @@ import React from 'react';
 import {render} from 'react-dom';
 import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
+import initialState from './store/initialState'
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore.js';
+
 import Main from './components/main/main';
 import Signup from './components/signup/signup';
 import Login from './components/login/login';
 import Dashboard from './components/dashboard/dashboard';
 import CreateDocument from './components/documents/createDocument';
-import initialState from './store/initialState'
-import { Provider } from 'react-redux';
-import configureStore from './store/configureStore.js';
 import loggedIn from './actions/authAction';
 import DocumentDetail from './components/documents/documentDetail';
 import Roles from './components/management/roles';
 import Users  from './components/management/users';
-import '../styles/styles.scss';
+
+import './styles/styles.scss';
 require('font-awesome/css/font-awesome.css');// Require Editor JS files.
 require("froala-editor/js/froala_editor.pkgd.min.js");
 // // Require Editor CSS files.
@@ -43,8 +45,8 @@ const onEnter = (next, replace, cb) => {
         <Route path="/dashboard" component={Dashboard} onEnter={onEnter} />
         <Route path="/createDocument" component={CreateDocument} onEnter={onEnter} />
         <Route path="/documents/:id" component={DocumentDetail} onEnter={onEnter} />
-        <Route path="/roles" component={Roles} onEnter={onEnter} />
-        <Route path="/users" component={Users} onEnter={onEnter} />
+        <Route path="/admin/users" component={Users} onEnter={onEnter} />
+        <Route path="/admin/roles" component={Roles} onEnter={onEnter} />
       </Route>
     </Router>
   </Provider>,

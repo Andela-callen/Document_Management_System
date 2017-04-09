@@ -31,8 +31,8 @@ export default class NavBar extends React.Component {
 
     const menu = (
       <span>
-        { isAdmin ? <li><Link to="/roles">View Role</Link></li> : null }
-        { isAdmin ? <li><Link to="/users">View Users</Link></li> : null}
+        { isAdmin ? <li><Link to="/admin/roles">View Role</Link></li> : null }
+        { isAdmin ? <li><Link to="/admin/users">View Users</Link></li> : null}
       </span>
     );
 
@@ -57,7 +57,7 @@ export default class NavBar extends React.Component {
       <div>
         <nav>
           <div className="nav-wrapper light-blue darken-3">
-            <Link to="/" className="brand-logo">DocumentIt!</Link>
+            <Link to="/" className="brand-logo">DocPit</Link>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               { !token ? unauthenticatedView : authenticatedView }
             </ul>
